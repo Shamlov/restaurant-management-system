@@ -16,4 +16,13 @@
 
 .icon {
   height: 40px;
+}
+
+.table {
+  width: 100px;
+  background-color: rgb(242, 242, 242);
+}
+
+.table-service {
+  background-color: rgb(183, 255, 152);
 }/*# sourceMappingURL=style.css.map */
