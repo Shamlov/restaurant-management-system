@@ -8,12 +8,37 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="kitchen-menu container-fluid canvas-color pb-1">
 
-        <div class="top-menu-buttons menu-color p-1 mb-1 rounded d-flex p-0 me-sm-3 me-1">
+<!-- по рекомендации бутстрап , код с модальным окном расположен в вергней части документа -->
+
+<!-- Кнопка-триггер модального окна
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Запустите демо модального окна
+</button> -->
+
+<!-- Модальное окно -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Шашлык по-кавказски из свинины с луком</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <p>Невероятный аромат и вкус шашлыка у многих ассоциируется с весенне-летней порой. Это блюдо неизменно связано с кавказской кухней. Считается, что именно представители Кавказа разбираются в том, как мариновать и как готовить мясо. состав: свинина, лук, специи , 1000 ККал</p>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+<!-- ................ -->
+
+    <div class="kitchen-menu container-fluid canvas-color pb-1 p-0">
+
+        <div class="top-menu-buttons menu-color p-1 mb-1 rounded d-flex p-0  position-fixed w-100">
             <div class="dropdown p-0 me-sm-3 me-1">
                 <button class="btn btn-secondary dropdown-toggle text-uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Категории меню
+                    в разработке 
                 </button>
                 <ul class="dropdown-menu">
                     <li><span class="dropdown-item" href="#">Действие</span></li>
@@ -32,22 +57,86 @@
                     <li><span class="dropdown-item" href="#">Супы</span></li>
                 </ul>
             </div>
+            <h5>Стол <span>34</span></h5>
+            <img src="images/icons/listOrders.svg" class="chef-card icon ms-auto"></img>
         </div>
+        
+        <div class="kitchen-menu-block list-cards p-1 pt-5">
 
-        <div class="kitchen-menu-block list-cards">
+            <div class="menu-category">
+                <h4>Холодные закуски &#9660</h4>
+            </div>
 
             <div class="order-card d-flex card-design my-1 p-1 rounded">
                 <div class="name-container w-100">
-                    <div class="name fs-5 fw-bold">Шашлык по-кавказски из свинины с луком <img src="images/icons/info.svg" class="chef-card icon"></img> </div>
-                    <div class="comment lh-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt nobis vel dolor provident. Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt nobis vel dolor provident. </div>
-                </div>
-                <div class="info-icon d-flex flex-column justify-content-center">
-                    <img src="images/icons/comment.svg" class="chef-card icon"></img>
-                    <img src="images/icons/stop.svg" class="chef-card icon"></img>
+                    <div class="name fs-5 fw-bold lh-1">Шашлык по-кавказски из свинины с луком</div>
+                    <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">в данном поле находится краткое описание блюда, состав калории и пр.</div>
                 </div>
                 <div class="card-button-block d-flex flex-column px-3 justify-content-center">
-                    <button class="confirm btn btn-success mb-1 text-uppercase" type="button">Добавить</button>
-                    <select id="inputState" class="form-select">
+                    <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button">240</button>
+                    <select id="inputState" class="form-select p-1">
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>*</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="order-card stop-list d-flex card-design my-1 p-1 rounded">
+                <div class="name-container w-100">
+                    <div class="name fs-5 fw-bold lh-1">Шашлык по-кавказски из свинины с луком</div>
+                    <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">в данном поле находится краткое описание блюда, состав калории и пр.</div>
+                </div>
+                <div class="card-button-block d-flex flex-column px-3 justify-content-center">
+                    <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button">454</button>
+                    <select id="inputState" class="form-select p-1">
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>*</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="order-card go-list d-flex card-design my-1 p-1 rounded">
+                <div class="name-container w-100">
+                    <div class="name fs-5 fw-bold lh-1">Шашлык по-кавказски из свинины с луком</div>
+                    <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">в данном поле находится краткое описание блюда, состав калории и пр.</div>
+                </div>
+                <div class="card-button-block d-flex flex-column px-3 justify-content-center">
+                    <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button">600</button>
+                    <select id="inputState" class="form-select p-1">
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>*</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="menu-category">
+                <h4>Горячие закуски &#9660</h4>
+            </div>
+
+            <div class="order-card  d-flex card-design my-1 p-1 rounded">
+                <div class="name-container w-100">
+                    <div class="name fs-5 fw-bold lh-1">Шашлык по-кавказски из свинины с луком</div>
+                    <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">в данном поле находится краткое описание блюда, состав калории и пр.</div>
+                </div>
+                <div class="card-button-block d-flex flex-column px-3 justify-content-center">
+                    <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button">950</button>
+                    <select id="inputState" class="form-select p-1">
                         <option selected>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -61,16 +150,12 @@
 
             <div class="order-card d-flex card-design my-1 p-1 rounded">
                 <div class="name-container w-100">
-                    <div class="name fs-5 fw-bold">Шашлык по-кавказски из свинины с луком <img src="images/icons/info.svg" class="chef-card icon"></img> </div>
-                    <div class="comment lh-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt nobis vel dolor provident. Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt nobis vel dolor provident. </div>
-                </div>
-                <div class="info-icon d-flex flex-column justify-content-center">
-                    <img src="images/icons/comment.svg" class="chef-card icon"></img>
-                    <img src="images/icons/fast.svg" class="chef-card icon"></img>
+                    <div class="name fs-5 fw-bold lh-1">Шашлык по-кавказски из свинины с луком</div>
+                    <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">в данном поле находится краткое описание блюда, состав калории и пр.</div>
                 </div>
                 <div class="card-button-block d-flex flex-column px-3 justify-content-center">
-                    <button class="confirm btn btn-success mb-1 text-uppercase" type="button">Добавить</button>
-                    <select id="inputState" class="form-select">
+                    <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button">550</button>
+                    <select id="inputState" class="form-select p-1">
                         <option selected>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -82,7 +167,87 @@
                 </div>
             </div>
 
+            <div class="order-card go-list d-flex card-design my-1 p-1 rounded">
+                <div class="name-container w-100">
+                    <div class="name fs-5 fw-bold lh-1">Шашлык по-кавказски из свинины с луком</div>
+                    <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">в данном поле находится краткое описание блюда, состав калории и пр.</div>
+                </div>
+                <div class="card-button-block d-flex flex-column px-3 justify-content-center">
+                    <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button">320</button>
+                    <select id="inputState" class="form-select p-1">
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>*</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="order-card stop-list d-flex card-design my-1 p-1 rounded">
+                <div class="name-container w-100">
+                    <div class="name fs-5 fw-bold lh-1">Шашлык по-кавказски из свинины с луком</div>
+                    <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">в данном поле находится краткое описание блюда, состав калории и пр.</div>
+                </div>
+                <div class="card-button-block d-flex flex-column px-3 justify-content-center">
+                    <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button">470</button>
+                    <select id="inputState" class="form-select p-1">
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>*</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="order-card stop-list d-flex card-design my-1 p-1 rounded">
+                <div class="name-container w-100">
+                    <div class="name fs-5 fw-bold lh-1">Шашлык по-кавказски из свинины с луком</div>
+                    <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">в данном поле находится краткое описание блюда, состав калории и пр.</div>
+                </div>
+                <div class="card-button-block d-flex flex-column px-3 justify-content-center">
+                    <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button">230555</button>
+                    <select id="inputState" class="form-select p-1">
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>*</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="order-card stop-list d-flex card-design my-1 p-1 rounded">
+                <div class="name-container w-100">
+                    <div class="name fs-5 fw-bold lh-1">Шашлык по-кавказски из свинины с луком</div>
+                    <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">в данном поле находится краткое описание блюда, состав калории и пр.</div>
+                </div>
+                <div class="card-button-block d-flex flex-column px-3 justify-content-center">
+                    <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button">230555</button>
+                    <select id="inputState" class="form-select p-1">
+                        <option selected>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>*</option>
+                    </select>
+                </div>
+            </div>
+
+
+
         </div>
+
+
 
 
     </div>
