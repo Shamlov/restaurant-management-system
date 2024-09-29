@@ -66,7 +66,7 @@ function showCheckboxList(data) {                  // вывод на экран
             menuCategoryCheckbox[i].insertAdjacentHTML('afterEnd', `
                 <div class="form-check ms-3">
                     <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="${data.id}" ${choice} id="flexCheckChecked1">
+                        <input class="form-check-input inputChek" type="checkbox" value="${data.id}" ${choice}>
                         ${data.nameDish}
                     </label>
                 </div>
@@ -82,5 +82,11 @@ const saveBtn = document.querySelector("#saveBtn")
 saveBtn.addEventListener('click', overwriteData)
 
 async function overwriteData() {
-    console.log(32456789)
+    const inputChek = document.getElementsByClassName('inputChek')
+    for(let i = 0; i < inputChek.length; i++) {
+        
+        console.log(inputChek[i].value)    // Не могу получить выбранный чекбокс. истина или лож
+    }
+    
+    console.log(listDishesMenu, 'проверяем внесенные изменения')
 }
