@@ -44,19 +44,19 @@ const listDishesMenu = [
 const restaurantMenuCategories = ['Холодные закуски', 'Горячие закуски', 'Салаты', 'Супы', 'Основные блюда', 'Блюда на гриле', 'Гарниры', 'Десерты', 'Напитки',] 
 
 
-// stop-list 
+// go-list 
 
-const stopList = document.querySelector('#stopList')
+const goList = document.querySelector('#goList')
 
-async function requestListStopCategories() {                  // имитируем запрос на сервер
-    insertStopCategoryList(restaurantMenuCategories)
+async function requestListGoCategories() {                  // имитируем запрос на сервер
+    insertGoCategoryList(restaurantMenuCategories)
 }
-requestListStopCategories()
+requestListGoCategories()
 
 
-function insertStopCategoryList(categories) {                    // Формируем наа странице список категорий блюд
+function insertGoCategoryList(categories) {                    // Формируем наа странице список категорий блюд
     categories.forEach((el) => {
-        stopList.insertAdjacentHTML('beforeEnd', `<h5 class="menuCategoryCheckbox ms-2" value="${el}">${el}</h5>`)
+        goList.insertAdjacentHTML('beforeEnd', `<h5 class="menuCategoryCheckbox ms-2" value="${el}">${el}</h5>`)
     })
 
     for(let i = 0; i < listDishesMenu.length; i++ )  { 
@@ -70,7 +70,7 @@ function showCheckboxList(data) {                  // вывод на экран
     for(let i = 0; i < menuCategoryCheckbox.length; i++) {
         if(menuCategoryCheckbox[i].textContent == data.category) {
             let choice = ""
-            if(data.stop) {
+            if(data.go) {
                 choice = 'checked'
             }
             menuCategoryCheckbox[i].insertAdjacentHTML('beforeBegin', `
@@ -96,10 +96,10 @@ async function overwriteData() {
     for(let i = 0; i < inputChek.length; i++) {         // в данном цикле идем без привязки к ID поэтому beforeBegin важен порядок . не меняем  menuCategoryCheckbox[i].insertAdjacentHTML('beforeBegin',
         console.log(inputChek[i])
         if(inputChek[i].checked) {
-            listDishesMenu[i].stop = true
+            listDishesMenu[i].go = true
         }
         if(!inputChek[i].checked) {
-            listDishesMenu[i].stop = false
+            listDishesMenu[i].go = false
         }
         
             // console.log(inputChek[i].checked)    // проверка  состояния чекбокса
