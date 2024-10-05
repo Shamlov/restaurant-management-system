@@ -1,7 +1,7 @@
-import { changeRestaurantMenuCategories } from './data.js'
-import { getRestaurantMenuCategories } from './data.js'
-import { changeListDishesMenu } from './data.js'
-import { getListDishesMenu } from './data.js'
+import { changeRestaurantMenuCategories } from '../data.js'
+import { getRestaurantMenuCategories } from '../data.js'
+import { changeListDishesMenu } from '../data.js'
+import { getListDishesMenu } from '../data.js'
 
 // stop-list 
 
