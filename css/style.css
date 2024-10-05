@@ -1,3 +1,11 @@
+.home-page h1 {
+  background-color: rgb(183, 255, 152);
+}
+.home-page h2:hover {
+  color: rgb(0, 89, 231);
+  cursor: pointer;
+}
+
 .card-design {
   background-color: rgb(242, 242, 242);
 }
