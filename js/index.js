@@ -204,7 +204,7 @@ function editingMenu() {
         const menuCategory = document.getElementsByClassName('menuCategory')
         for(let i = 0; i < menuCategory.length; i++) {
             if(menuCategory[i].textContent == data.category) {
-                menuCategory[i].insertAdjacentHTML('afterEnd', 
+                menuCategory[i].insertAdjacentHTML('afterBegin',    //  afterEnd
                     `<div class="order-card d-flex card-design my-1 p-1 rounded" data-id = ${data.id}>
                         <div class="name-container w-100">
                             <div class="name fs-5 fw-bold lh-1">${data.nameDish}<span class="ms-5">${data.price} р.</span></div>
