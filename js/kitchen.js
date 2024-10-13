@@ -8,7 +8,7 @@ let currentOrders = getListCurrentOrders()    // переменная в кот�
 function getCurrentOrders() {
     currentOrders = getListCurrentOrders()
 }
-// setInterval(()=>getCurrentOrders(), 2000)     // синхронизируем данные с удаленным хранилищем
+setInterval(()=>getCurrentOrders(), 2000)     // синхронизируем данные с удаленным хранилищем
 
 function kitchen() {
     let kitchen = ` <div class="window-kitchen container-fluid canvas-color pb-1">
@@ -53,7 +53,7 @@ function showListOrders(dataArr) {      //  показываем карточк�
             duplicateIcon = ''
         }
         // console.log(dataArr[i].ready)
-        if(!dataArr[i].ready) {
+        if(!dataArr[i].ready && !dataArr[i].cancel) {                   // в условии если готово или отмена тогда карточки не показываем
             listCards.insertAdjacentHTML( 'afterBegin' , 
                 `<div class="order-card d-flex card-design my-1 p-1 rounded">
                     <div class="name-container w-100">
@@ -107,6 +107,7 @@ function sendingCookReady(event) {
             currentOrders[i].ready = true
         }
     }
+    event.target.closest('.order-card').classList.add('background-color-ready') // добавление цветовой маркировки при клике готово
 }
 
 listCards.addEventListener('click', sendingСookCancel)   // прослушивание клика кнопки заказ отменен
@@ -121,7 +122,8 @@ function sendingСookCancel(event) {
             currentOrders[i].cancel = true
         }
     }
-    console.log(currentOrders)
+    event.target.closest('.order-card').classList.add('cancel-background-color')
+    event.target.closest('.order-card') = ''
 }
 
 

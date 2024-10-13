@@ -5,6 +5,22 @@ import { getListDishesMenu } from '../data.js'
 
 // stop-list 
 
+let app = document.querySelector('#app')    // Удалить при переносе
+let stopListHeader = `    
+    <div class="window-kitchen container-fluid canvas-color pb-1">
+        <div class="top-menu-buttons menu-color p-1 mb-1 rounded">
+            <a href="kitchen.html" type="button" class="btn btn-primary me-3 ms-5 text-uppercase">Назад</a>
+            <button type="button" class="btn btn-primary me-3 ms-5 text-uppercase" id="saveBtn">Сохранить</button>
+        </div>
+        
+        <div class="stop-list-block">
+            <h4>Стоп-лист</h4>
+            <div id="stopList"></div>
+        </div>
+    </div>
+`
+app.innerHTML = stopListHeader
+
 const stopList = document.querySelector('#stopList')
 
 async function requestListStopCategories() {                  // имитируем запрос на сервер
