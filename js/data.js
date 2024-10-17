@@ -98,7 +98,7 @@ export function getListDishesMenu() {
 
 // массив объектов заказанных позиций /////////////////////////////////////////////////////////////////////////////////\\
 
-const currentOrders = [
+let currentOrders = [
     {
         uniqueOrderDishNumber: 2312431,
         table: 3,
