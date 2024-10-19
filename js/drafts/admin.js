@@ -34,6 +34,7 @@ const lisTables = document.querySelector('#lisTables')
 
 // дополнительно ввести и принимать в функцию данные о заказах
 function htmlBlockTablesFormation(dataArr) {
+    lisTables.innerHTML = ''
     for(let i = 0; i < dataArr.length; i++) {
         let sum = sumorderAmountTable(dataArr[i].number)
         lisTables.insertAdjacentHTML('beforeEnd', `
@@ -128,4 +129,13 @@ btnCloseCheck.addEventListener('click', deleteOrder)
 
 function deleteOrder() {
     removeTableData(tableNam)
+    colorMarkingClosedCheck()
+    htmlBlockTablesFormation(getListTables())
+}
+
+function colorMarkingClosedCheck() {    // цветовая маркировка закрытого чека
+    let openChecks = document.querySelectorAll('.open-checks > p')
+    openChecks.forEach((el) => {
+        el.classList.add('closed-check')
+    })
 }
