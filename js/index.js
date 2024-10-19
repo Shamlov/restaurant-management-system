@@ -626,7 +626,11 @@ function adminPage() {
             .reduce((a, x) => a + x.price * x.quantity, 0);
     }
     
-    
+    function issuedSumorderAmountTable(tableNumber) {      // принимает номер столика и возвращает сумму выданных
+            return getListCurrentOrders()
+            .filter(x => (x.table === tableNumber) && x.issued)
+            .reduce((a, x) => a + x.price * x.quantity, 0);
+    }
     
     // цветовая маркировка выбранного столика
     const finalPriceEl = document.querySelector('#finalPrice')
@@ -653,7 +657,7 @@ function adminPage() {
     //формирование финальной цены
     function finalPrice(table) {
         finalPriceEl.innerHTML = `
-            <h4>Итого: <span class="d-inline-block ms-4 fw-bold">${sumorderAmountTable(+table)}<span> p.</span></span></h4>
+            <h4>Итого: <span class="d-inline-block ms-4 fw-bold">${issuedSumorderAmountTable(+table)}<span> p.</span></span></h4>
         `
     }
     
@@ -667,7 +671,7 @@ function adminPage() {
         listCurrentOrders.forEach((el) => {
             
             if(el.table == table) {
-                elText += `<p class="mb-0">${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span></span></p>`
+                elText += `<p class="mb-0">${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span><span>${showLogoStatusDish(el)}</span></span></p>`
             }
             
         })
@@ -710,4 +714,18 @@ function adminPage() {
             el.classList.add('closed-check')
         })
     }
+
+    
+    
+    function showLogoStatusDish(el) { // вывод логотипа статуса блюда
+        let htmlImg = `<img src="images/icons/cook.png" class="chef-card icon ms-2"></img>`
+        console.log(el)
+        if(el.ready) {
+            htmlImg = `<img src="images/icons/ready-meal.png" class="chef-card icon ms-2"></img>`
+        }
+        if(el.issued) {
+            htmlImg = `<img src="images/icons/waiter.png" class="chef-card icon ms-2"></img>`
+        }
+        return htmlImg
+    } 
 }

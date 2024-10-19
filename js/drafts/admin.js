@@ -92,7 +92,7 @@ function showTableReceiptList(table) {
     let listCurrentOrders = getListCurrentOrders()
     // let arrListCurrentOrders = []
     let elText =''
-    let elComment =''
+    // let elComment =''
     listCurrentOrders.forEach((el) => {
         
         if(el.table == table) {

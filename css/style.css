@@ -63,4 +63,9 @@
 
 .closed-check {
   background-color: rgb(235, 228, 130);
+}
+
+.open-checks-container .icon {
+  width: 25px;
+  height: 25px;
 }/*# sourceMappingURL=style.css.map */
