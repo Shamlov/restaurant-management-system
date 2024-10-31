@@ -1,9 +1,16 @@
 const app = document.querySelector('#app')
 
+import { getListTables } from '/js/data.js';
 import { getListDishesMenu } from '/js/data.js';
+import { getRestaurantMenuCategories } from '/js/data.js';
+import { getListCurrentOrders } from '/js/data.js';
+import { changeCurrentOrders } from '/js/data.js';
+
 //////////////////////////////
 
-let ListDishesMenu = getListDishesMenu()   // не забыть обновлять при клике на кнопку обновить и по таймеру
+let listDishesMenu = getListDishesMenu()   // не забыть обновлять при клике на кнопку обновить и по таймеру
+let restaurantMenuCategories = getRestaurantMenuCategories()
+const intermediateOrder = []    // массив промежуточного заказа
 let headerKitchenМenu = `
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -37,26 +44,88 @@ let headerKitchenМenu = `
         </div>
         <select id="inputState" class="table form-select p-1 w-25 mb-0">
             <option selected>Выбранный столик</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-            <option>6</option>
-            <option>7</option>
-            <option>8</option>
-            <option>9</option>
-            <option>10</option>
-            <option>11</option>
+            <option value="1">1</option>
+            <option value="1">2</option>
+            <option value="1">3</option>
+            <option value="1">4</option>
+            <option value="1">5</option>
+            <option value="1">6</option>
+            <option value="1">7</option>
+            <option value="1">8</option>
+            <option value="1">9</option>
+            <option value="1">10</option>
+            <option value="1">11</option>
         </select>
         <img src="/images/icons/listOrders.svg" class="chef-card icon ms-auto"></img>
     </div>
-    <div class="kitchen-menu-block list-cards p-1 pt-5"></div>
+    <div class="kitchen-menu-block list-cards p-1 pt-5" id="kitchenMenuBlock"></div>
 </div>
 `
 app.innerHTML = headerKitchenМenu
+const kitchenMenuBlock = document.querySelector('#kitchenMenuBlock')
 
-console.log(ListDishesMenu)
+
+function showMenuCategories(categories) {     // категории заполняются автоматически из массива
+    categories.forEach((el, index) => {
+        kitchenMenuBlock.insertAdjacentHTML('afterBegin', `
+                <div class="menu-category">
+                    <h4>${el}</h4>
+                </div>
+            `)
+    });
+
+    for(let i = 0; i < listDishesMenu.length; i++ )  { 
+        showMenuCards(listDishesMenu[i])                           //как только категории основного экрана заполнены ,  вызываем функцию показа карточек которые есть в массиве
+    }
+}
+
+showMenuCategories(restaurantMenuCategories)
+
+
+function showMenuCards(data) {
+    const menuCategory = document.getElementsByClassName('menu-category')
+    for(let i = 0; i < menuCategory.length; i++) {
+        // console.log(menuCategory[i].firstElementChild.textContent)
+        let statusList = ''
+        if(menuCategory[i].firstElementChild.textContent == data.category) {
+            if(data.stop) {
+                statusList = 'stop-list'
+            }
+            if(data.go) {
+                statusList = 'go-list'
+            }
+            menuCategory[i].insertAdjacentHTML('afterEnd',    //  afterEnd
+            `
+                <div class="order-card d-flex card-design my-1 p-1 rounded ${statusList}" data-id="${data.id}">
+                    <div class="name-container w-100">
+                        <div class="name fs-5 fw-bold lh-1">${data.nameDish}</div>
+                        <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">${data.description}</div>
+                    </div>
+                    <div class="card-button-block d-flex flex-column px-3 justify-content-center">
+                        <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button">${data.price}</button>
+                        <select id="inputState" class="form-select p-1">
+                            <option selected value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="false">*</option>
+                        </select>
+                    </div>
+                </div>
+            `
+            )
+        }
+    }
+}
+
+
+
+
+
+
+
 
 
 
