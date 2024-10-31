@@ -8,6 +8,15 @@ import { changeCurrentOrders } from '/js/data.js';
 
 //////////////////////////////
 
+function listTables() {
+    let listTables = ''
+    getListTables().forEach((el, index) => {
+        listTables += ` <option value="${el.number}">${el.number} ${el.description}</option>`
+    }) 
+    return listTables
+}
+
+
 let listDishesMenu = getListDishesMenu()   // не забыть обновлять при клике на кнопку обновить и по таймеру
 let restaurantMenuCategories = getRestaurantMenuCategories()
 const intermediateOrder = []    // массив промежуточного заказа
@@ -44,17 +53,7 @@ let headerKitchenМenu = `
         </div>
         <select id="inputState" class="table form-select p-1 w-25 mb-0">
             <option selected>Выбранный столик</option>
-            <option value="1">1</option>
-            <option value="1">2</option>
-            <option value="1">3</option>
-            <option value="1">4</option>
-            <option value="1">5</option>
-            <option value="1">6</option>
-            <option value="1">7</option>
-            <option value="1">8</option>
-            <option value="1">9</option>
-            <option value="1">10</option>
-            <option value="1">11</option>
+            ${listTables()}
         </select>
         <img src="/images/icons/listOrders.svg" class="chef-card icon ms-auto"></img>
     </div>
@@ -102,7 +101,7 @@ function showMenuCards(data) {
                         <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">${data.description}</div>
                     </div>
                     <div class="card-button-block d-flex flex-column px-3 justify-content-center">
-                        <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button">${data.price}</button>
+                        <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button" >${data.price}</button>
                         <select id="inputState" class="form-select p-1">
                             <option selected value="1">1</option>
                             <option value="2">2</option>
@@ -120,10 +119,24 @@ function showMenuCards(data) {
     }
 }
 
+kitchenMenuBlock.addEventListener('click', clickAddButton )
 
+function clickAddButton(event) {     // клик и получение данных при клике на кнопку с ценой
+    if(!(event.target.closest('button'))) {
+        return
+    }
+    writeDataIntermediateArray(event.target.closest('.order-card').dataset.id, event.target.closest('.order-card').lastElementChild.lastElementChild.value )
+    //console.log(event.target.closest('.order-card').dataset.id)   // получили ID блюда меню
+    // console.log(event.target.closest('.order-card').lastElementChild.lastElementChild.value )   // получили колличество блюда меню
+}
 
-
-
+function writeDataIntermediateArray(sId, quantity) {
+    let obj = listDishesMenu.find(el => el.id == sId)      // находим объект в массиве по id
+    obj.quantity = +quantity
+    // console.log(obj)
+    intermediateOrder.push(obj)
+    console.log(intermediateOrder)   //  получили обект промежуточного заказа
+}
 
 
 
