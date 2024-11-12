@@ -36,7 +36,8 @@ function homePage() {
             kitchen()
         }
         if(event.target.closest('#waiter1Start')) {
-            console.log("клик по пункту Официант N 1")
+            // console.log("клик по пункту Официант N 1")
+            kitchenМenu()
         }
         if(event.target.closest('#waiter2Start')) {
             console.log("клик по пункту Официант N 2")
@@ -729,3 +730,248 @@ function adminPage() {
         return htmlImg
     } 
 }
+
+let intermediateOrder = []    // массив промежуточного заказа
+function kitchenМenu() {
+    function listTables() {
+        let listTables = ''
+        getListTables().forEach((el, index) => {
+            listTables += ` <option value="${el.number}">${el.number} ${el.description}</option>`
+        }) 
+        return listTables
+    }
+    
+    let listDishesMenu = getListDishesMenu()   // не забыть обновлять при клике на кнопку обновить и по таймеру
+    let restaurantMenuCategories = getRestaurantMenuCategories()
+    let headerKitchenМenu = `
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Шашлык по-кавказски из свинины с луком</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Невероятный аромат и вкус шашлыка у многих ассоциируется с весенне-летней порой. Это блюдо неизменно связано с кавказской кухней. Считается, что именно представители Кавказа разбираются в том, как мариновать и как готовить мясо. состав: свинина, лук, специи , 1000 ККал</p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    <div class="kitchen-menu container-fluid canvas-color pb-1 p-0">
+        <div class="top-menu-buttons menu-color p-1 mb-1 rounded d-flex p-0  position-fixed w-100">
+            <button type="button" class="btn btn-primary me-3 ms-1 text-uppercase" id="update">Обновить</button>
+            <button type="button" class="btn btn-primary text-uppercase me-3" id="homePageBtn">На главную</button>
+            <div class="dropdown p-0 me-sm-3 me-1">
+                <button class="btn btn-secondary dropdown-toggle text-uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Меню
+                </button>
+                <ul class="dropdown-menu">
+                    <li><span class="dropdown-item" href="#">Холодные закуски</span></li>
+                    <li><span class="dropdown-item" href="#">Горячие закуски</span></li>
+                    <li><span class="dropdown-item" href="#">Салаты</span></li>
+                    <li><span class="dropdown-item" href="#">Супы</span></li>
+                </ul>
+            </div>
+            <select id="selectedTable" class="table form-select p-1 w-25 mb-0">
+                <option selected value='0'>Выбранный столик</option>
+                ${listTables()}
+            </select>
+            <img src="/images/icons/listOrders.svg" class="chef-card icon ms-auto" id="orderReceiptButton"></img>
+        </div>
+        <div class="kitchen-menu-block list-cards p-1 pt-5" id="kitchenMenuBlock"></div>
+    </div>
+    `
+    app.innerHTML = headerKitchenМenu
+    const kitchenMenuBlock = document.querySelector('#kitchenMenuBlock')
+    const homePageBtn = document.querySelector('#homePageBtn')
+    homePageBtn.addEventListener('click', homePage)
+
+    function showMenuCategories(categories) {     // категории заполняются автоматически из массива
+        categories.forEach((el, index) => {
+            kitchenMenuBlock.insertAdjacentHTML('afterBegin', `
+                    <div class="menu-category">
+                        <h4>${el}</h4>
+                    </div>
+                `)
+        });
+    
+        for(let i = 0; i < listDishesMenu.length; i++ )  { 
+            showMenuCards(listDishesMenu[i])                           //как только категории основного экрана заполнены ,  вызываем функцию показа карточек которые есть в массиве
+        }
+    }
+    
+    showMenuCategories(restaurantMenuCategories)
+    
+    function showMenuCards(data) {
+        const menuCategory = document.getElementsByClassName('menu-category')
+        for(let i = 0; i < menuCategory.length; i++) {
+            // console.log(menuCategory[i].firstElementChild.textContent)
+            let statusList = ''
+            if(menuCategory[i].firstElementChild.textContent == data.category) {
+                if(data.stop) {
+                    statusList = 'stop-list'
+                }
+                if(data.go) {
+                    statusList = 'go-list'
+                }
+                menuCategory[i].insertAdjacentHTML('afterEnd',    //  afterEnd
+                `
+                    <div class="order-card d-flex card-design my-1 p-1 rounded ${statusList}" data-id="${data.id}">
+                        <div class="name-container w-100">
+                            <div class="name fs-5 fw-bold lh-1">${data.nameDish}</div>
+                            <div class="comment lh-1" data-bs-toggle="modal" data-bs-target="#exampleModal">${data.description}</div>
+                        </div>
+                        <div class="card-button-block d-flex flex-column px-3 justify-content-center">
+                            <button class="confirm price-button btn btn-success mb-1 p-0 fs-5" type="button" >${data.price}</button>
+                            <select id="inputState" class="form-select p-1">
+                                <option selected value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="false">*</option>
+                            </select>
+                        </div>
+                    </div>
+                `
+                )
+            }
+        }
+    }
+    
+    kitchenMenuBlock.addEventListener('click', clickAddButton )
+    
+    function clickAddButton(event) {     // клик и получение данных при клике на кнопку с ценой
+        if(!(event.target.closest('button'))) {
+            return
+        }
+        writeDataIntermediateArray(event.target.closest('.order-card').dataset.id, event.target.closest('.order-card').lastElementChild.lastElementChild.value )
+        //console.log(event.target.closest('.order-card').dataset.id)   // получили ID блюда меню
+        // console.log(event.target.closest('.order-card').lastElementChild.lastElementChild.value )   // получили колличество блюда меню
+        console.log()
+    }
+    
+    function writeDataIntermediateArray(sId, quantity) {
+        let obj = listDishesMenu.find(el => el.id == sId)      // находим объект в массиве по id
+        obj.quantity = +quantity
+        // console.log(obj)
+        intermediateOrder.push(obj)
+        console.log(intermediateOrder)   //  получили обект промежуточного заказа
+    }
+
+    const orderReceiptButton = document.querySelector("#orderReceiptButton")
+    function selectedTable () {
+        const selectedTableBtn = document.querySelector("#selectedTable")
+        if(!(+selectedTableBtn.value)) {
+            alert('Столик не выбран')
+        }
+        if(+selectedTableBtn.value) {
+        intermediateOrder.unshift(+selectedTableBtn.value)
+        addingOrder1()
+        }
+          // как только получили данные по столику. вызываеим функцию построенмя чека
+    }
+    orderReceiptButton.addEventListener('click', selectedTable)
+    
+}
+
+
+
+function addingOrder1() {
+    let addingOrderHtmlCode = `
+        <div class="kitchen-menu container-fluid canvas-color pb-1 p-0">
+
+        <div class="top-menu-buttons menu-color p-1 mb-1 rounded d-flex p-0  position-fixed w-100">
+            <div class="dropdown p-0 me-sm-3 me-1">
+                <button type="button" class="btn btn-primary me-3 ms-1 text-uppercase" id="update">Обновить</button>
+                <button type="button" class="btn btn-primary text-uppercase me-3" id="homePageBtn">На главную</button>
+            </div>
+            <span class="align-self-center fw-bold"">Столик ${intermediateOrder[0]}</span>
+            <button class="btn btn-secondary ms-auto text-uppercase" id="confirmBtn">Верно</button>
+        </div>
+
+        <div class="adding-order pt-5 px-2" id="addingOrder"></div>
+
+        <div class="price-block d-flex justify-content-end pe-4 fs-5 fw-bold">
+            <span>Итого: &emsp;</span>
+            <span>${sum(intermediateOrder)}</span>
+            <span>&nbsp;руб.</span>
+        </div>
+    </div>
+    `
+    app.innerHTML = addingOrderHtmlCode
+    console.log(intermediateOrder)
+    let addingOrder = document.querySelector('#addingOrder')
+    for(let i = 1; i < intermediateOrder.length; i++ ) {
+        console.log(intermediateOrder[i])
+        addingOrder.insertAdjacentHTML('beforeEnd', `
+            <div class="product-line border-bottom border-2 border-black border-opacity-50" data-intermediateOrderId = ${i}>
+                <div class="d-flex">
+                    <div class="me-2">
+                        <img class="icon" src="/images/icons/delete.svg" alt="">
+                    </div>
+                    <h4 class="me-auto pe-2 fs-5">${intermediateOrder[i].nameDish}</h4>
+                    <span class="quantity fs-4 fw-bold pe-2">${intermediateOrder[i].quantity} <span> шт.</span></span>
+                    <span class="price fs-4 fw-bold pe-2">${intermediateOrder[i].price} <span> р.</span></span>
+                    <button class="btn-add-comment btn btn-primary btn-sm px-2 py-0" data-bs-toggle="modal" data-bs-target="#exampleModal">Комментарий</button>
+                </div>
+                <p class="commet mb-0">тут будет находиться ваш комментарий</p>
+            </div>
+        `)
+    }
+
+    const confirmBtn = document.querySelector('#confirmBtn')
+    confirmBtn.addEventListener('click', lickConfirmButton)
+    function lickConfirmButton() {    // выполняется при клике на кнопку верно
+        writeOrdersArray(intermediateOrder)
+        kitchenМenu()
+    }
+}
+
+function sum (arrOrder) {    // считаем смумму заказа
+    let sum = 0
+    for(let i = 1; i < arrOrder.length; i++) {
+        sum += +arrOrder[i].price * +arrOrder[i].quantity
+    }
+    return sum
+}
+
+function writeOrdersArray(arrOrder) {    // запись заказа в массив для официантов
+    let currentOrders = getListCurrentOrders()
+    let time = timeOrger()
+    let orderNumber = generationOrderNumber()
+    for (let i = 1; i < arrOrder.length; i++) {
+        console.log(arrOrder[i])
+        arrOrder[i].time = time
+        arrOrder[i].orderNumber = orderNumber
+        arrOrder[i].table = arrOrder[0]
+        arrOrder[i].ready = false
+        arrOrder[i].issued = false
+    }
+    arrOrder.shift()   // уберем 0 элемент массива . т.к. он указывал на выбранный номер столика
+    currentOrders.concat(arrOrder)
+    let rezArr = currentOrders.concat(arrOrder)
+    changeCurrentOrders(rezArr)
+    console.log(getListCurrentOrders())
+    intermediateOrder = []
+}
+
+
+// Генерация номера заказа
+function generationOrderNumber() {
+    let time = new Date 
+    /////// не могу написать регулярку одним заходом
+    let regexp1 = /\D/gi;
+    let rez = time.toTimeString().replace(regexp1, '');
+    let regexp2 = /^.{6}/gi;
+    return rez.match(regexp2)[0]
+}
+
+// Генерация времени заказа
+function timeOrger() {
+    var currentdate = new Date(); 
+    return ((currentdate.getHours() < 10)?"0":"") + currentdate.getHours() +":"+ ((currentdate.getMinutes() < 10)?"0":"") + currentdate.getMinutes() +":"+ ((currentdate.getSeconds() < 10)?"0":"") + currentdate.getSeconds();
+}    

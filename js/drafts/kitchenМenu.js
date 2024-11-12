@@ -7,7 +7,7 @@ import { getListCurrentOrders } from '/js/data.js';
 import { changeCurrentOrders } from '/js/data.js';
 
 //////////////////////////////
-
+let intermediateOrder = []    // массив промежуточного заказа
 function kitchenМenu() {
     function listTables() {
         let listTables = ''
@@ -19,7 +19,6 @@ function kitchenМenu() {
     
     let listDishesMenu = getListDishesMenu()   // не забыть обновлять при клике на кнопку обновить и по таймеру
     let restaurantMenuCategories = getRestaurantMenuCategories()
-    const intermediateOrder = []    // массив промежуточного заказа
     let headerKitchenМenu = `
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -51,8 +50,8 @@ function kitchenМenu() {
                     <li><span class="dropdown-item" href="#">Супы</span></li>
                 </ul>
             </div>
-            <select id="inputState" class="table form-select p-1 w-25 mb-0">
-                <option selected>Выбранный столик</option>
+            <select id="selectedTable" class="table form-select p-1 w-25 mb-0">
+                <option selected value='0'>Выбранный столик</option>
                 ${listTables()}
             </select>
             <img src="/images/icons/listOrders.svg" class="chef-card icon ms-auto" id="orderReceiptButton"></img>
@@ -138,8 +137,19 @@ function kitchenМenu() {
     }
 
     const orderReceiptButton = document.querySelector("#orderReceiptButton")
-    orderReceiptButton.addEventListener('click', addingOrder)
-    console.log(inputState)
+    function selectedTable () {
+        const selectedTableBtn = document.querySelector("#selectedTable")
+        if(!(+selectedTableBtn.value)) {
+            alert('Столик не выбран')
+        }
+        if(+selectedTableBtn.value) {
+        intermediateOrder.unshift(+selectedTableBtn.value)
+        addingOrder()
+        }
+          // как только получили данные по столику. вызываеим функцию построенмя чека
+    }
+    orderReceiptButton.addEventListener('click', selectedTable)
+    
 }
 
 kitchenМenu()
@@ -166,81 +176,77 @@ function addingOrder() {
 
         <div class="top-menu-buttons menu-color p-1 mb-1 rounded d-flex p-0  position-fixed w-100">
             <div class="dropdown p-0 me-sm-3 me-1">
-                <button class="btn btn-secondary dropdown-toggle text-uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    в разработке 
-                </button>
-                <ul class="dropdown-menu">
-                    <li><span class="dropdown-item" href="#">Действие</span></li>
-                    <li><span class="dropdown-item" href="#">Другое действие</span></li>
-                    <li><span class="dropdown-item" href="#">Что-то еще здесь</span></li>
-                </ul>
+                <button type="button" class="btn btn-primary me-3 ms-1 text-uppercase" id="update">Обновить</button>
+                <button type="button" class="btn btn-primary text-uppercase me-3" id="homePageBtn">На главную</button>
             </div>
-            <div class="dropdown p-0 me-sm-3 me-1">
-                <button class="btn btn-secondary dropdown-toggle text-uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Меню
-                </button>
-                <ul class="dropdown-menu">
-                    <li><span class="dropdown-item" href="#">Холодные закуски</span></li>
-                    <li><span class="dropdown-item" href="#">Горячие закуски</span></li>
-                    <li><span class="dropdown-item" href="#">Салаты</span></li>
-                    <li><span class="dropdown-item" href="#">Супы</span></li>
-                </ul>
-            </div>
-            <span class="align-self-center">Стол 23</span>
-            <button class="btn btn-secondary ms-auto text-uppercase">Верно</button>
+            <span class="align-self-center fw-bold"">Столик ${intermediateOrder[0]}</span>
+            <button class="btn btn-secondary ms-auto text-uppercase" id="confirmBtn">Верно</button>
         </div>
 
-        <div class="adding-order pt-5 px-2">
+        <div class="adding-order pt-5 px-2" id="addingOrder"></div>
 
-            <div class="product-line border-bottom border-2 border-black border-opacity-50">
-                <div class="d-flex">
-                    <div class="me-2">
-                        <img class="icon" src="/images/icons/delete.svg" alt="">
-                    </div>
-                    <h4 class="me-auto pe-2 fs-5">Солянка сборная с зеленью</h4>
-                    <span class="quantity fs-4 fw-bold pe-2">2 <span> шт.</span></span>
-                    <span class="price fs-4 fw-bold pe-2">450 <span> р.</span></span>
-                    <button class="btn-add-comment btn btn-primary btn-sm px-2 py-0" data-bs-toggle="modal" data-bs-target="#exampleModal">Комментарий</button>
-                </div>
-                <p class="commet mb-0">тут будет находиться ваш комментарий</p>
-            </div>
-
-            <div class="product-line border-bottom border-2 border-black border-opacity-50">
-                <div class="d-flex">
-                    <div class="me-2">
-                        <img class="icon" src="/images/icons/delete.svg" alt="">
-                    </div>
-                    <h4 class="me-auto pe-2 fs-5">Нарезка овощьная с зеленью</h4>
-                    <span class="quantity fs-4 fw-bold pe-2">4 <span> шт.</span></span>
-                    <span class="price fs-4 fw-bold pe-2">260 <span> р.</span></span>
-                    <button class="btn-add-comment btn btn-primary btn-sm px-2 py-0">Комментарий</button>
-                </div>
-            </div>
-
-            <div class="product-line border-bottom border-2 border-black border-opacity-50">
-                <div class="d-flex">
-                    <div class="me-2">
-                        <img class="icon" src="/images/icons/delete.svg" alt="">
-                    </div>
-                    <h4 class="me-auto pe-2 fs-5">Салат "Цезарь"</h4>
-                    <span class="quantity fs-4 fw-bold pe-2">1 <span> шт.</span></span>
-                    <span class="price fs-4 fw-bold pe-2">300 <span> р.</span></span>
-                    <button class="btn-add-comment btn btn-primary btn-sm px-2 py-0">Комментарий</button>
-                </div>
-            </div>
-        </div>
         <div class="price-block d-flex justify-content-end pe-4 fs-5 fw-bold">
             <span>Итого: &emsp;</span>
-            <span>879</span>
+            <span>${sum(intermediateOrder)}</span>
             <span>&nbsp;руб.</span>
         </div>
     </div>
     `
     app.innerHTML = addingOrderHtmlCode
+    console.log(intermediateOrder)
+    let addingOrder = document.querySelector('#addingOrder')
+    for(let i = 1; i < intermediateOrder.length; i++ ) {
+        console.log(intermediateOrder[i])
+        addingOrder.insertAdjacentHTML('beforeEnd', `
+            <div class="product-line border-bottom border-2 border-black border-opacity-50" data-intermediateOrderId = ${i}>
+                <div class="d-flex">
+                    <div class="me-2">
+                        <img class="icon" src="/images/icons/delete.svg" alt="">
+                    </div>
+                    <h4 class="me-auto pe-2 fs-5">${intermediateOrder[i].nameDish}</h4>
+                    <span class="quantity fs-4 fw-bold pe-2">${intermediateOrder[i].quantity} <span> шт.</span></span>
+                    <span class="price fs-4 fw-bold pe-2">${intermediateOrder[i].price} <span> р.</span></span>
+                    <button class="btn-add-comment btn btn-primary btn-sm px-2 py-0" data-bs-toggle="modal" data-bs-target="#exampleModal">Комментарий</button>
+                </div>
+                <p class="commet mb-0">тут будет находиться ваш комментарий</p>
+            </div>
+        `)
+    }
+
+    const confirmBtn = document.querySelector('#confirmBtn')
+    confirmBtn.addEventListener('click', lickConfirmButton)
+    function lickConfirmButton() {    // выполняется при клике на кнопку верно
+        writeOrdersArray(intermediateOrder)
+
+    }
 }
 
+function sum (arrOrder) {    // считаем смумму заказа
+    let sum = 0
+    for(let i = 1; i < arrOrder.length; i++) {
+        sum += +arrOrder[i].price * +arrOrder[i].quantity
+    }
+    return sum
+}
 
-
+function writeOrdersArray(arrOrder) {    // запись заказа в массив для официантов
+    let currentOrders = getListCurrentOrders()
+    let time = timeOrger()
+    let orderNumber = generationOrderNumber()
+    for (let i = 1; i < arrOrder.length; i++) {
+        console.log(arrOrder[i])
+        arrOrder[i].time = time
+        arrOrder[i].orderNumber = orderNumber
+        arrOrder[i].table = arrOrder[0]
+        arrOrder[i].ready = false
+        arrOrder[i].issued = false
+    }
+    arrOrder.shift()   // уберем 0 элемент массива . т.к. он указывал на выбранный номер столика
+    currentOrders.concat(arrOrder)
+    let rezArr = currentOrders.concat(arrOrder)
+    changeCurrentOrders(rezArr)
+    console.log(getListCurrentOrders())
+}
 
 
 
@@ -264,4 +270,3 @@ function timeOrger() {
     return ((currentdate.getHours() < 10)?"0":"") + currentdate.getHours() +":"+ ((currentdate.getMinutes() < 10)?"0":"") + currentdate.getMinutes() +":"+ ((currentdate.getSeconds() < 10)?"0":"") + currentdate.getSeconds();
 }    
 
-// console.log(12345)
