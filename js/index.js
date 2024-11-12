@@ -4,10 +4,11 @@ import { getRestaurantMenuCategories } from './data.js'
 import { changeListDishesMenu } from './data.js'
 import { getListDishesMenu } from './data.js'
 
+homePage()     // Запуск стартовой страницы 
 
-// Стартовая страница
-homePage() 
-function homePage() {
+///////// Стартовая страница  ----->>>>>
+
+function homePage() {    // Формирование стартовой страницы 
     let homePage = `
     <div class="home-page" >
         <h1 class="p-3">Вас приветствует сиситема управления и автомаризации работы ресторана</h1>
@@ -16,44 +17,43 @@ function homePage() {
             <h2 class="fs-3 fw-bold" id="adminStart">Администратор</h2>
             <h2 class="fs-3 fw-bold" id="kitchenStart">Кухня</h2>
             <h2 class="fs-3 fw-bold" id="waiter1Start">Официант N 1</h2>
-            <h2 class="fs-3 fw-bold" id="waiter2Start">Официант N 2</h2>
-            <h2 class="fs-3 fw-bold" id="waiter3Start">Официант N 3</h2>
+            <h2 class="fs-3 fw-bold" id="waiter2Start">Официант дополнительно</h2>
             <h2 class="fs-3 fw-bold" id="editingMenuStart">Страиница редактирования меню</h2>
         </div>
     </div>
     `;
-    app.innerHTML = homePage;      // заполняем стартовую страницу при загрузке
 
-    const selectionBlockHome = document.querySelector('#selectionBlockHome') 
-    selectionBlockHome.addEventListener('click', homeMenuSelection)             // отслидим клики пользователя по пунктам меню на стартовой странице
+    app.innerHTML = homePage;      // заполняем HTML кодом стартовую страницу при запуске приложения
+
+    const selectionBlockHome = document.querySelector('#selectionBlockHome')    
+    selectionBlockHome.addEventListener('click', homeMenuSelection)             // отслидим клики пользователя по пунктам меню на стартовой странице. идем методом делегирования
     function homeMenuSelection(event) {                                
-        if(event.target.closest('#adminStart')) {
-            adminPage()
-            // console.log("клик по пункту Администратор")
+        if(event.target.closest('#adminStart')) {               // клик по пункту Администратор
+            adminPage()        // запускаем страницу администратора
         }
-        if(event.target.closest('#kitchenStart')) {
-            // console.log("клик по пункту Кухня")
-            kitchen()
+        if(event.target.closest('#kitchenStart')) {       // клик по пункту Кухня
+            kitchen()          // запускаем страницу кухни
         }
-        if(event.target.closest('#waiter1Start')) {
-            // console.log("клик по пункту Официант N 1")
-            kitchenМenu()
+        if(event.target.closest('#waiter1Start')) {    // клик по пункту Официант N 1
+            kitchenМenu()       // запуск функции меню официанта
         }
         if(event.target.closest('#waiter2Start')) {
-            console.log("клик по пункту Официант N 2")
+            alert ("Для подключения дополнительного сторудника, обратитесь к разработчику")
         }
-        if(event.target.closest('#waiter3Start')) {
-            console.log("клик по пункту Официант N 3")
-        }
-        if(event.target.closest('#editingMenuStart')) {
-            // console.log("клик по пункту Страиница редактирования меню")
+        if(event.target.closest('#editingMenuStart')) {    // клик по пункту Страиница редактирования меню
             editingMenu()
         }
     }
 }
 
+//////////////////////////////////////// Стартовая страница   <<<----
 
-////////////////////////////////////////
+
+
+
+
+
+
 
 function editingMenu() {
     // отрисовка стартовой страницы
