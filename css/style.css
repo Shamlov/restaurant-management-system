@@ -68,4 +68,8 @@
 .open-checks-container .icon {
   width: 25px;
   height: 25px;
+}
+
+.active-waiter-tables {
+  background-color: rgb(83, 255, 94);
 }/*# sourceMappingURL=style.css.map */

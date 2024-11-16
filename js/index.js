@@ -3,8 +3,7 @@ import { changeRestaurantMenuCategories } from './data.js'
 import { getRestaurantMenuCategories } from './data.js'
 import { changeListDishesMenu } from './data.js'
 import { getListDishesMenu } from './data.js'
-import { getListTables } from './data.js'// в адресе убрать точку при переносе
-
+import { getListTables } from './data.js'
 
 homePage()     // Запуск стартовой страницы 
 
@@ -109,7 +108,6 @@ function adminPage() {
                 `
             )
         }
-        
     }
     htmlBlockTablesFormation(getListTables())
     
