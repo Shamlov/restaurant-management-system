@@ -3,10 +3,12 @@ import { changeRestaurantMenuCategories } from './data.js'
 import { getRestaurantMenuCategories } from './data.js'
 import { changeListDishesMenu } from './data.js'
 import { getListDishesMenu } from './data.js'
+import { getListTables } from './data.js'// в адресе убрать точку при переносе
+
 
 homePage()     // Запуск стартовой страницы 
 
-///////// Стартовая страница  ----->>>>>
+//  Стартовая страница  ----->>>>>      /////////////////////////////////////////////////////////
 
 function homePage() {    // Формирование стартовой страницы 
     let homePage = `
@@ -47,6 +49,200 @@ function homePage() {    // Формирование стартовой стра
 }
 
 //////////////////////////////////////// Стартовая страница   <<<----
+
+// окно администратора ---->>>                  ////////////////////////////////////////////////////////
+
+function adminPage() {
+
+    let tableNam = 0      // выбранный столик по умолчанию. в нем меняем значение переменной исходя из клика пользователя
+    const adminStartHtml = `
+        <div class="window-kitchen container-fluid canvas-color pb-1">
+            <div class="top-menu-buttons menu-color p-1 mb-1 rounded d-flex">
+                <button type="button" class="btn btn-primary me-3 ms-5 text-uppercase" id="update">Обновить</button>
+                <button type="button" class="btn btn-primary text-uppercase me-3" id="homePageBtn">На главную</button>
+                <button type="button" class="btn btn-primary text-uppercase me-3" id="stopListBtn">Стоп-лист</button>
+                <button type="button" class="btn btn-primary text-uppercase me-3" id="goListListBtn">Гоу-лист</button>
+                <p class="ms-auto px-4 fs-5">Администратор</p>
+            </div>
+    
+            <div class="list-tables d-flex flex-wrap gap-2" id="lisTables"></div>
+    
+            <div>
+                <div class="open-checks-container" id="openChecksContainer"></div>
+                <div class="final-cost card-design" id="finalPrice"></div>
+        
+                <div class="button-block">
+                    <button type="button" class="btn btn-success" id="btnCloseCheck">Закрыть чек</button>
+                </div>
+            </div>
+        </div>
+    `
+    app.innerHTML = adminStartHtml      //  отрисовываем страницу администатора
+
+    
+    let update = document.querySelector('#update')
+    update.addEventListener('click', adminPage)        //  вызов функции по отрисовке текущей страницы (обновление)
+    setInterval(adminPage, 10000)                      //  автоматическое обновление текущей страницы через временной интервал 10 сек
+
+    const homePageBtn = document.querySelector('#homePageBtn')
+    homePageBtn.addEventListener('click', homePage)      //  вызов функции по отрисовке стартовой страницы
+
+    let stopListBtn = document.querySelector('#stopListBtn')
+    stopListBtn.addEventListener('click', stopList )     // вызов функции по отрисовке стоп-лист страницы
+
+    let goListListBtn = document.querySelector('#goListListBtn')
+    goListListBtn.addEventListener('click', goList )     // вызов функции по отрисовке гоу-лист страницы
+    
+
+    const lisTables = document.querySelector('#lisTables')
+    
+    // дополнительно ввести и принимать в функцию данные о заказах
+    function htmlBlockTablesFormation(dataArr) {
+        lisTables.innerHTML = ''
+        for(let i = 0; i < dataArr.length; i++) {
+            let sum = sumorderAmountTable(dataArr[i].number)
+            lisTables.insertAdjacentHTML('beforeEnd', `
+                <div class="table text-center" data-table = ${dataArr[i].number}>
+                    <p>стол ${dataArr[i].number}</p>
+                    <p>${sum? sum +' р.' : 'чеков нет'}</p>
+                </div>
+                `
+            )
+        }
+        
+    }
+    htmlBlockTablesFormation(getListTables())
+    
+    function sumorderAmountTable(tableNumber) {      // принимает номер столика и возвращает сумму всех чеков по этому столику 
+        return getListCurrentOrders()
+            .filter(x => x.table === tableNumber)
+            .reduce((a, x) => a + x.price * x.quantity, 0);
+    }
+    
+    function issuedSumorderAmountTable(tableNumber) {      // принимает номер столика и возвращает сумму выданных
+            return getListCurrentOrders()
+            .filter(x => (x.table === tableNumber) && x.issued)
+            .reduce((a, x) => a + x.price * x.quantity, 0);
+    }
+    
+    // цветовая маркировка выбранного столика
+    const finalPriceEl = document.querySelector('#finalPrice')
+    lisTables.addEventListener('click', userTableSelection)  
+    
+    
+    
+    function userTableSelection(event) {    // показ итоговой стоимости заказанных товаров внизу ИТОГО
+        if(!event.target.closest('.table')) {
+            return
+        }
+        // добавляем цветовую маркировку блокам с выбранным столиком 
+        let arr = event.currentTarget.children
+        for(let el of arr) {
+            el.classList.remove('active-table')
+        }
+        event.target.closest('.table').classList.add('active-table')
+    
+        finalPrice(event.target.closest('.table').dataset.table)  //передаем в функцию показа стоимости номер выбранного столика
+        showTableReceiptList(event.target.closest('.table').dataset.table)   //передаем в функцию показа чеков номер выбранного столика
+        tableNam = event.target.closest('.table').dataset.table
+    }
+    
+    //формирование финальной цены
+    function finalPrice(table) {
+        finalPriceEl.innerHTML = `
+            <h4>Итого: <span class="d-inline-block ms-4 fw-bold">${issuedSumorderAmountTable(+table)}<span> p.</span></span></h4>
+        `
+    }
+    
+    const openChecksContainer = document.querySelector('#openChecksContainer')
+    function showTableReceiptList(table) {
+        openChecksContainer.innerHTML = ''
+        let listCurrentOrders = getListCurrentOrders()
+        // let arrListCurrentOrders = []
+        let elText =''
+        let elComment =''
+        listCurrentOrders.forEach((el) => {
+            
+            if(el.table == table) {
+                elText += `<p class="mb-0">${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span><span>${showLogoStatusDish(el)}</span></span></p>`
+            }
+            
+        })
+    
+        openChecksContainer.insertAdjacentHTML('afterBegin', `
+            <div class="open-checks card-design">
+                <h2 class="fs-4 border-bottom  border-black">Открытый чек столика N ${table}</h2>
+                ${elText}
+            </div>
+        `)
+    }
+    
+    
+    function removeTableData(table) {     // Удаление из объекта заказа с выбранным столиком
+        console.log(getListCurrentOrders())
+        let listCurrentOrders = getListCurrentOrders()
+        let newListCurrentOrders = []
+        listCurrentOrders.forEach((el) => {
+            if( !(el.table == table)) {
+                newListCurrentOrders.push(el)
+            }
+        })
+        changeCurrentOrders(newListCurrentOrders)
+        console.log(getListCurrentOrders())
+    }
+    
+    
+    let btnCloseCheck = document.querySelector('#btnCloseCheck')
+    btnCloseCheck.addEventListener('click', deleteOrder)
+    
+    function deleteOrder() {
+        removeTableData(tableNam)
+        colorMarkingClosedCheck()
+        htmlBlockTablesFormation(getListTables())
+    }
+    
+    function colorMarkingClosedCheck() {    // цветовая маркировка закрытого чека
+        let openChecks = document.querySelectorAll('.open-checks > p')
+        openChecks.forEach((el) => {
+            el.classList.add('closed-check')
+        })
+    }
+
+    
+    
+    function showLogoStatusDish(el) { // вывод логотипа статуса блюда
+        let htmlImg = `<img src="images/icons/cook.png" class="chef-card icon ms-2"></img>`
+        console.log(el)
+        if(el.ready) {
+            htmlImg = `<img src="images/icons/ready-meal.png" class="chef-card icon ms-2"></img>`
+        }
+        if(el.issued) {
+            htmlImg = `<img src="images/icons/waiter.png" class="chef-card icon ms-2"></img>`
+        }
+        return htmlImg
+    } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -558,178 +754,7 @@ function goList() {
 }
 
 
-// окно администратора
-import { getListTables } from './data.js'// в адресе убрать точку при переносе
-// import { changeCurrentOrders } from './data.js'// в адресе убрать точку при переносе
-function adminPage() {
 
-
-    let tableNam = 0
-    const adminStartHtml = `
-        <div class="window-kitchen container-fluid canvas-color pb-1">
-            <div class="top-menu-buttons menu-color p-1 mb-1 rounded d-flex">
-                <button type="button" class="btn btn-primary me-3 ms-5 text-uppercase" id="update">Обновить</button>
-                <button type="button" class="btn btn-primary text-uppercase me-3" id="homePageBtn">На главную</button>
-                <button type="button" class="btn btn-primary text-uppercase me-3" id="stopListBtn">Стоп-лист</button>
-                <button type="button" class="btn btn-primary text-uppercase me-3" id="goListListBtn">Гоу-лист</button>
-                <p class="ms-auto px-4 fs-5">Администратор</p>
-            </div>
-    
-            <div class="list-tables d-flex flex-wrap gap-2" id="lisTables"></div>
-    
-            <div>
-                <div class="open-checks-container" id="openChecksContainer"></div>
-                <div class="final-cost card-design" id="finalPrice"></div>
-        
-                <div class="button-block">
-                    <button type="button" class="btn btn-success" id="btnCloseCheck">Закрыть чек</button>
-                </div>
-            </div>
-        </div>
-    `
-    app.innerHTML = adminStartHtml
-
-    let update = document.querySelector('#update')
-    update.addEventListener('click', adminPage)
-
-    const homePageBtn = document.querySelector('#homePageBtn')
-    homePageBtn.addEventListener('click', homePage)    //  вызов функции по отрисовке стартовой страницы
-
-    let stopListBtn = document.querySelector('#stopListBtn')
-    stopListBtn.addEventListener('click', stopList )     // вызов функции по отрисовке стоп-лист страницы
-
-    let goListListBtn = document.querySelector('#goListListBtn')
-    goListListBtn.addEventListener('click', goList )     // вызов функции по отрисовке стоп-лист страницы
-    
-    const lisTables = document.querySelector('#lisTables')
-    // 
-    
-    // дополнительно ввести и принимать в функцию данные о заказах
-    function htmlBlockTablesFormation(dataArr) {
-        lisTables.innerHTML = ''
-        for(let i = 0; i < dataArr.length; i++) {
-            let sum = sumorderAmountTable(dataArr[i].number)
-            lisTables.insertAdjacentHTML('beforeEnd', `
-                <div class="table text-center" data-table = ${dataArr[i].number}>
-                    <p>стол ${dataArr[i].number}</p>
-                    <p>${sum? sum +' р.' : 'чеков нет'}</p>
-                </div>
-                `
-            )
-        }
-        
-    }
-    htmlBlockTablesFormation(getListTables())
-    
-    function sumorderAmountTable(tableNumber) {      // принимает номер столика и возвращает сумму всех чеков по этому столику 
-        return getListCurrentOrders()
-            .filter(x => x.table === tableNumber)
-            .reduce((a, x) => a + x.price * x.quantity, 0);
-    }
-    
-    function issuedSumorderAmountTable(tableNumber) {      // принимает номер столика и возвращает сумму выданных
-            return getListCurrentOrders()
-            .filter(x => (x.table === tableNumber) && x.issued)
-            .reduce((a, x) => a + x.price * x.quantity, 0);
-    }
-    
-    // цветовая маркировка выбранного столика
-    const finalPriceEl = document.querySelector('#finalPrice')
-    lisTables.addEventListener('click', userTableSelection)  
-    
-    
-    
-    function userTableSelection(event) {    // показ итоговой стоимости заказанных товаров внизу ИТОГО
-        if(!event.target.closest('.table')) {
-            return
-        }
-        // добавляем цветовую маркировку блокам с выбранным столиком 
-        let arr = event.currentTarget.children
-        for(let el of arr) {
-            el.classList.remove('active-table')
-        }
-        event.target.closest('.table').classList.add('active-table')
-    
-        finalPrice(event.target.closest('.table').dataset.table)  //передаем в функцию показа стоимости номер выбранного столика
-        showTableReceiptList(event.target.closest('.table').dataset.table)   //передаем в функцию показа чеков номер выбранного столика
-        tableNam = event.target.closest('.table').dataset.table
-    }
-    
-    //формирование финальной цены
-    function finalPrice(table) {
-        finalPriceEl.innerHTML = `
-            <h4>Итого: <span class="d-inline-block ms-4 fw-bold">${issuedSumorderAmountTable(+table)}<span> p.</span></span></h4>
-        `
-    }
-    
-    const openChecksContainer = document.querySelector('#openChecksContainer')
-    function showTableReceiptList(table) {
-        openChecksContainer.innerHTML = ''
-        let listCurrentOrders = getListCurrentOrders()
-        // let arrListCurrentOrders = []
-        let elText =''
-        let elComment =''
-        listCurrentOrders.forEach((el) => {
-            
-            if(el.table == table) {
-                elText += `<p class="mb-0">${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span><span>${showLogoStatusDish(el)}</span></span></p>`
-            }
-            
-        })
-    
-        openChecksContainer.insertAdjacentHTML('afterBegin', `
-            <div class="open-checks card-design">
-                <h2 class="fs-4 border-bottom  border-black">Открытый чек столика N ${table}</h2>
-                ${elText}
-            </div>
-        `)
-    }
-    
-    
-    function removeTableData(table) {     // Удаление из объекта заказа с выбранным столиком
-        console.log(getListCurrentOrders())
-        let listCurrentOrders = getListCurrentOrders()
-        let newListCurrentOrders = []
-        listCurrentOrders.forEach((el) => {
-            if( !(el.table == table)) {
-                newListCurrentOrders.push(el)
-            }
-        })
-        changeCurrentOrders(newListCurrentOrders)
-        console.log(getListCurrentOrders())
-    }
-    
-    
-    let btnCloseCheck = document.querySelector('#btnCloseCheck')
-    btnCloseCheck.addEventListener('click', deleteOrder)
-    
-    function deleteOrder() {
-        removeTableData(tableNam)
-        colorMarkingClosedCheck()
-        htmlBlockTablesFormation(getListTables())
-    }
-    
-    function colorMarkingClosedCheck() {    // цветовая маркировка закрытого чека
-        let openChecks = document.querySelectorAll('.open-checks > p')
-        openChecks.forEach((el) => {
-            el.classList.add('closed-check')
-        })
-    }
-
-    
-    
-    function showLogoStatusDish(el) { // вывод логотипа статуса блюда
-        let htmlImg = `<img src="images/icons/cook.png" class="chef-card icon ms-2"></img>`
-        console.log(el)
-        if(el.ready) {
-            htmlImg = `<img src="images/icons/ready-meal.png" class="chef-card icon ms-2"></img>`
-        }
-        if(el.issued) {
-            htmlImg = `<img src="images/icons/waiter.png" class="chef-card icon ms-2"></img>`
-        }
-        return htmlImg
-    } 
-}
 
 let intermediateOrder = []    // массив промежуточного заказа
 function kitchenМenu() {
