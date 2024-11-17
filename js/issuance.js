@@ -83,12 +83,61 @@ function issuance() {
     
     colorCodingTablesCurrentWaiter(getListCurrentOrders())
 
-    function selectedTable() {      // действие при клике на выбранный столик
-        
+    function colorCodingSelectedTable(event) {             // добавляем цветовую маркировку блокам с выбранным столиком 
+        let arr = event.currentTarget.children
+        for(let el of arr) {
+            el.classList.remove('active-waiter-selection')
+        }
+        event.target.closest('.table').classList.add('active-waiter-selection')
     }
+
+
+    const openChecksContainerIssuance = document.querySelector('#openChecksContainerIssuance')
+    function showCurrentOrders(currentOrdersArr, numTable) {       //  отображение на странице информации о текущих заказах по каждому столику
+        openChecksContainerIssuance.innerHTML = ''
+        let elText =''
+        currentOrdersArr.forEach((el) => {
+            if(el.table == numTable) {
+                elText += `<p class="mb-0">${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span><span>${showLogoStatusDish(el)}</span></span></p>`
+
+            }
+        }
+        )
+        openChecksContainerIssuance.insertAdjacentHTML('beforeend' , `
+            <div class="open-checks card-design">
+                <h2 class="fs-4 border-bottom  border-black">Открытый чек столика N <span>${numTable}</span></h2>
+                ${elText}
+            </div>
+        `)
+
+    }
+
+    // возможно нужно будет удалить
+    function showLogoStatusDish(el) { // вывод логотипа статуса блюда
+        let htmlImg = `<img src="images/icons/cook.png" class="chef-card icon ms-2"></img>`
+        console.log(el)
+        if(el.ready) {
+            htmlImg = `<img src="images/icons/ready-meal.png" class="chef-card icon ms-2"></img>`
+        }
+        if(el.issued) {
+            htmlImg = `<img src="images/icons/waiter.png" class="chef-card icon ms-2"></img>`
+        }
+        return htmlImg
+    } 
 
     
 
+    listTablesIssuance.addEventListener('click', selectedTable)  
+    function selectedTable(event) {                  // действие при клике на выбранный столик
+        if(!event.target.closest('.table')) {    
+            return
+        }
+
+        colorCodingSelectedTable(event)               // добавляем цветовую маркировку блокам с выбранным столиком 
+        showCurrentOrders(getListCurrentOrders(), +event.target.closest('.table').dataset.table)    // передадим массив текущие заказы и номер столика на который кликает официант
+        console.log(+event.target.closest('.table').dataset.table)
+
+    }
 }
 
 issuance()

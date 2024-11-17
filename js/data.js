@@ -101,7 +101,7 @@ export function getListDishesMenu() {
 let currentOrders = [
     {
         uniqueOrderDishNumber: 2312431,
-        table: 5,
+        table: 1,
         teme: '23:12:43',
         orderNumber: '231243',
         waiter: 1,
@@ -121,7 +121,7 @@ let currentOrders = [
     },
     {
         uniqueOrderDishNumber: 2312433,
-        table: 3,
+        table: 2,
         teme: '23:12:43',
         orderNumber: '8888888',
         waiter: 1,
@@ -141,7 +141,7 @@ let currentOrders = [
     },
     {
         uniqueOrderDishNumber: 2312433,
-        table: 3,
+        table: 2,
         teme: '23:12:43',
         orderNumber: '8888888',
         waiter: 1,
