@@ -1,5 +1,7 @@
 import { getListCurrentOrders } from './data.js'
 import { getListTables } from './data.js'
+import { changeCurrentOrders } from './data.js'
+
 const app = document.querySelector('#app')
 
 function issuance() {
@@ -98,7 +100,8 @@ function issuance() {
         let elText =''
         currentOrdersArr.forEach((el) => {
             if(el.table == numTable) {
-                elText += `<p class="mb-0">${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span><span>${showLogoStatusDish(el)}</span></span></p>`
+                let btnGiveOut = !el.issued ? `<button type="button" class="btn btn-success btn-sm">Выдать</button>` : ''    // это кнопка выдать
+                elText += `<p class="mb-0" data-idDish = ${el.idDish}>${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span><span>${showLogoStatusDish(el)}</span></span> ${btnGiveOut}</p>`
 
             }
         }
@@ -138,6 +141,25 @@ function issuance() {
         console.log(+event.target.closest('.table').dataset.table)
 
     }
+
+    openChecksContainerIssuance.addEventListener('click', issuedBtn)                   // прослушивание кнопок выдано
+    function issuedBtn(event) {
+        if(!event.target.closest('button')) {    
+            return
+        }
+
+        let arr = getListCurrentOrders()
+
+
+        for(let i = 0; i < arr.length; i++ ) {
+            if(+event.target.closest('p').dataset.iddish == arr[i].idDish) {
+                arr[i].issued = true
+            }
+        }
+        changeCurrentOrders(arr)
+    }
 }
+
+
 
 issuance()

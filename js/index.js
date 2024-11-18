@@ -973,6 +973,7 @@ function writeOrdersArray(arrOrder) {    // запись заказа в мас�
         arrOrder[i].table = arrOrder[0]
         arrOrder[i].ready = false
         arrOrder[i].issued = false
+        arrOrder[i].idDish = orderNumber + i
     }
     arrOrder.shift()   // уберем 0 элемент массива . т.к. он указывал на выбранный номер столика
     currentOrders.concat(arrOrder)
