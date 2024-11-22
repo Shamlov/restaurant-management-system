@@ -1,11 +1,22 @@
 // home-page 
 .home-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: rgb(205, 205, 205);
+  height: 100vh;
+  background-image: url(/images/content_home.png);
+  background-position: 750px 300px;
+  background-repeat: no-repeat;
   h1{
-    background-color:rgb(183, 255, 152);
+    background-color:rgb(54, 54, 54);
+    color: rgb(220, 219, 217);
   }
+  
   h2:hover {
-    color: rgb(0, 89, 231);
+    color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.112);
     cursor: pointer;
+    
   } 
 }
 

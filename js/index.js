@@ -12,14 +12,17 @@ homePage()     // Запуск стартовой страницы
 function homePage() {    // Формирование стартовой страницы 
     let homePage = `
     <div class="home-page" >
-        <h1 class="p-3">Вас приветствует сиситема управления и автомаризации работы ресторана</h1>
-        <p class="fs-4 px-3">Для продолжения работы, выберете соответствующий пункт</p>
+        <h1 class="p-3 text-center">Cиситема управления и автомаризации работы общепита</h1>
+        <p class="fs-4 px-3 text-center">Для продолжения работы, выберете соответствующий пункт</p>
         <div class="selection-block px-4" id="selectionBlockHome">
             <h2 class="fs-3 fw-bold" id="adminStart">Администратор</h2>
             <h2 class="fs-3 fw-bold" id="kitchenStart">Кухня</h2>
             <h2 class="fs-3 fw-bold" id="waiter1Start">Официант N 1</h2>
             <h2 class="fs-3 fw-bold" id="waiter2Start">Официант дополнительно</h2>
             <h2 class="fs-3 fw-bold" id="editingMenuStart">Страиница редактирования меню</h2>
+            <h2 class="fs-3 fw-bold" id="editingMenuStart">Складской учет</h2>
+            <h2 class="fs-3 fw-bold" id="editingMenuStart">История заказов</h2>
+            <h2 class="fs-3 fw-bold" id="editingMenuStart">Книга знаний</h2>
         </div>
     </div>
     `;
