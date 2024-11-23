@@ -1,6 +1,7 @@
 // цветовая палитра
 .color {
   color:#f78888;
+  color:#d07171;
   color:#f3d250;
   color:#ececec;
   color:#90ccf4;
@@ -18,6 +19,9 @@
   height: 100vh;
   background-color: #ececec;
   padding: 0 10px;
+  background-image: url(/images/content_home.png);
+  background-position: 730px 300px;
+  background-repeat: no-repeat;
 }
 
 .table {
@@ -54,9 +58,9 @@
 }
 // home-page 
 .home-page {
-  background-image: url(/images/content_home.png);
-  background-position: 730px 300px;
-  background-repeat: no-repeat;
+  // background-image: url(/images/content_home.png);
+  // background-position: 730px 300px;
+  // background-repeat: no-repeat;
 
   h1{
     background-color:#363636;
@@ -114,9 +118,29 @@
 
 ///////////////////////////////////////////////////////////
 
+// Кухня
+
+.order-card {
+  border: 1px solid #363636;
+}
+
+.confirm {
+  background-color: #88e78e;
+}
+.confirm:hover {
+  background-color: #78cc7d;
+}
+
+.cancel {
+  background-color: #f78888;
+}
+.cancel:hover {
+  background-color: #d07171;
+}
 
 
 
+///////////////////////////////////////////////////////////
 
 
 

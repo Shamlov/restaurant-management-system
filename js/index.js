@@ -58,7 +58,7 @@ function adminPage() {
 
     let tableNam = 0      // выбранный столик по умолчанию. в нем меняем значение переменной исходя из клика пользователя
     const adminStartHtml = `
-        <div class="window-kitchen general-style pb-1 general-style">
+        <div class="window-kitchen pb-1 general-style">
             <div class="top-menu-buttons header  p-1 mb-1 d-flex ">
                 <button type="button" class="btn text-uppercase me-3 ms-5" id="update">Обновить</button>
                 <button type="button" class="btn text-uppercase me-3" id="homePageBtn">На главную</button>
@@ -223,6 +223,200 @@ function adminPage() {
         return htmlImg
     } 
 }
+
+
+
+
+
+
+
+// формирование страницы для кухни
+
+import { changeCurrentOrders } from './data.js';
+import { getListCurrentOrders } from './data.js';
+
+function kitchen() {
+    
+    let currentOrders     // переменная в которой находиться весь массив текущих заказов
+
+    function getCurrentOrders() {
+        currentOrders = getListCurrentOrders()
+    }
+    getCurrentOrders()
+    // setInterval(()=>getCurrentOrders(), 2000)     // синхронизируем данные с удаленным хранилищем
+
+    function kitchen() {
+        let kitchen = ` 
+            <div class="window-kitchen general-style pb-1">
+                <div class="top-menu-buttons header p-1 mb-1 d-flex ">
+                    <button type="button" class="btn text-uppercase me-3 ms-5" id="update">Обновить</button>
+                    <button type="button" class="btn text-uppercase me-3" id="homePageBtn">На главную</button>
+                    <button type="button" class="btn text-uppercase me-3" id="stopListBtn">Стоп-лист</button>
+                    <button type="button" class="btn text-uppercase me-3" id="goListListBtn">Гоу-лист</button>
+                    <p class="ms-auto px-4 fs-5">Кухня</p>
+                </div>
+
+                <div class="list-cards" id="listCards"></div>
+                
+            </div>
+        `
+
+        app.innerHTML = kitchen;
+    }
+    kitchen()
+
+
+
+    const homePageBtn = document.querySelector('#homePageBtn')
+    homePageBtn.addEventListener('click', homePage)    //  вызов функции по отрисовке стартовой страницы
+
+    let stopListBtn = document.querySelector('#stopListBtn')
+    stopListBtn.addEventListener('click', stopList )     // вызов функции по отрисовке стоп-лист страницы
+
+    let goListListBtn = document.querySelector('#goListListBtn')
+    goListListBtn.addEventListener('click', goList )     // вызов функции по отрисовке стоп-лист страницы
+
+
+    function duplicate(dataArr, dataEl) {    // поиск дубликата блюд
+        let duplicate = false
+        let count = -1
+        for (let i = 0; i < dataArr.length; i++ ) {
+            if(dataArr[i].nameDish == dataEl.nameDish && !dataArr[i].ready) {
+                count ++
+            }
+        }
+        if(count) {
+            duplicate = true
+        }
+        return duplicate
+    }
+
+    const listCards = document.querySelector('#listCards')
+
+    function showListOrders(dataArr) {      //  показываем карточки с заказами
+        for (let i = 0; i < dataArr.length; i++ ) {
+            let duplicateIcon = `<img src="images/icons/copy.svg" class="chef-card icon"></img>`
+            if(!duplicate(dataArr, dataArr[i])) {
+                duplicateIcon = ''
+            }
+            // console.log(dataArr[i].ready)
+            if(!dataArr[i].ready && !dataArr[i].cancel) {                   // в условии если готово или отмена тогда карточки не показываем
+                listCards.insertAdjacentHTML( 'afterBegin' , 
+                    `<div class="order-card d-flex card-design my-1 p-1 rounded">
+                        <div class="name-container w-100">
+                            <div class="name fs-5 fw-bold">${dataArr[i].nameDish}&emsp;<span class="order-number">${dataArr[i].orderNumber}</span></div>
+                            <div class="comment lh-1">${dataArr[i].comment}</div>
+                        </div>
+                        <div class="numerical-information px-3 d-flex flex-column justify-content-center">
+                            <div class="servings-quantity fs-3 fw-bold text-nowrap">x ${dataArr[i].quantity}</div>
+                            <div class="table-number fs-4">${dataArr[i].table}</div>
+                        </div>
+                        <div class="info-icon d-flex flex-column justify-content-center">
+                            <img src="images/icons/info.svg" class="chef-card icon" data-id = ${dataArr[i].id}></img>
+                            ${duplicateIcon}
+                        </div>
+                        <div class="card-button-block d-flex flex-column px-3 justify-content-center">
+                            <button class="confirm btn mb-1 text-uppercase cookReadyBtn" type="button" data-idDish= ${dataArr[i].idDish}>Готов</button>
+                            <button class="cancel btn text-uppercase cookCancelBtn" type="button" data-idDish= ${dataArr[i].idDish}>Отмена</button>
+                        </div>
+                    </div>`
+                )
+            }
+            // console.log(duplicate(dataArr, dataArr[i]))    // Проверка дубликата.
+        }
+        // console.log(currentOrders)
+    }
+
+    // придумать, как ввести модальное окно  при клике на инонку рецепта???????????
+
+    showListOrders(currentOrders)
+
+    let update = document.querySelector('#update')
+    update.addEventListener('click', updatingOrderList)
+
+    // setInterval(()=>updatingOrderList(), 2000)    // автообновление листа с заказами
+    function updatingOrderList() {                // функция обновления листа с заказами
+        listCards.innerHTML = ''
+        showListOrders(currentOrders)
+    }
+
+
+
+    listCards.addEventListener('click', sendingCookReady)   // прослушивание клика кнопки заказ приготовлен
+
+    function sendingCookReady(event) {
+        if(!event.target.closest('.cookReadyBtn')) {
+        return
+        }
+        console.log('готово')
+        // тут при клиике готово меняем статус в массиве на готово
+        console.log(getCurrentOrders())
+        for(let i = 0; i < currentOrders.length; i++ ) { 
+            // console.log(+currentOrders[i].idDish)
+            // console.log((+event.target.dataset.iddish))
+            if(+currentOrders[i].idDish == +event.target.dataset.iddish) {
+                // console.log(currentOrders[i].ready)
+                currentOrders[i].ready = true
+                // console.log(currentOrders[i].ready)
+                changeCurrentOrders(currentOrders)
+            }
+        }
+        console.log(getCurrentOrders())
+        event.target.closest('.order-card').classList.add('background-color-ready') // добавление цветовой маркировки при клике готово
+    }
+
+    listCards.addEventListener('click', sendingСookCancel)   // прослушивание клика кнопки заказ отменен
+    function sendingСookCancel(event) {
+        if(!event.target.closest('.cookCancelBtn')) {
+            return
+            }
+        console.log('Отмена')
+            // тут при клиике готово меняем статус в массиве на отмена
+        for(let i = 0; i < currentOrders.length; i++ ) {    
+            if(currentOrders[i].uniqueOrderDishNumber == (+event.target.dataset.uniqueorderdishnumber)) {
+                currentOrders[i].cancel = true
+            }
+        }
+        event.target.closest('.order-card').classList.add('cancel-background-color')
+        event.target.closest('.order-card') = ''
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -629,158 +823,6 @@ function goList() {
 
 
 
-
-import { changeCurrentOrders } from './data.js';
-import { getListCurrentOrders } from './data.js';
-
-// формирование страницы для кухни
-
-function kitchen() {
-    
-    let currentOrders     // переменная в которой находиться весь массив текущих заказов
-
-    function getCurrentOrders() {
-        currentOrders = getListCurrentOrders()
-    }
-    getCurrentOrders()
-    // setInterval(()=>getCurrentOrders(), 2000)     // синхронизируем данные с удаленным хранилищем
-
-    function kitchen() {
-        let kitchen = ` 
-            <div class="window-kitchen container-fluid canvas-color pb-1">
-
-            <div class="top-menu-buttons menu-color p-1 mb-1 rounded">
-                <button type="button" class="btn btn-primary me-3 ms-5 text-uppercase" id="update">Обновить</button>
-                <button class="btn btn-secondary dropdown-toggle text-uppercase" id="homePageBtn">На главную</button>
-                <button type="button" class="btn btn-primary text-uppercase" id="stopListBtn">Стоп-лист</button>
-                <button type="button" class="btn btn-primary text-uppercase" id="goListListBtn">Гоу-лист</button>
-            </div>
-
-            <div class="list-cards" id="listCards">
-                
-            </div>
-        `
-
-        app.innerHTML = kitchen;
-    }
-    kitchen()
-
-
-
-    const homePageBtn = document.querySelector('#homePageBtn')
-    homePageBtn.addEventListener('click', homePage)    //  вызов функции по отрисовке стартовой страницы
-
-    let stopListBtn = document.querySelector('#stopListBtn')
-    stopListBtn.addEventListener('click', stopList )     // вызов функции по отрисовке стоп-лист страницы
-
-    let goListListBtn = document.querySelector('#goListListBtn')
-    goListListBtn.addEventListener('click', goList )     // вызов функции по отрисовке стоп-лист страницы
-
-
-    function duplicate(dataArr, dataEl) {    // поиск дубликата блюд
-        let duplicate = false
-        let count = -1
-        for (let i = 0; i < dataArr.length; i++ ) {
-            if(dataArr[i].nameDish == dataEl.nameDish && !dataArr[i].ready) {
-                count ++
-            }
-        }
-        if(count) {
-            duplicate = true
-        }
-        return duplicate
-    }
-
-    const listCards = document.querySelector('#listCards')
-
-    function showListOrders(dataArr) {      //  показываем карточки с заказами
-        for (let i = 0; i < dataArr.length; i++ ) {
-            let duplicateIcon = `<img src="images/icons/copy.svg" class="chef-card icon"></img>`
-            if(!duplicate(dataArr, dataArr[i])) {
-                duplicateIcon = ''
-            }
-            // console.log(dataArr[i].ready)
-            if(!dataArr[i].ready && !dataArr[i].cancel) {                   // в условии если готово или отмена тогда карточки не показываем
-                listCards.insertAdjacentHTML( 'afterBegin' , 
-                    `<div class="order-card d-flex card-design my-1 p-1 rounded">
-                        <div class="name-container w-100">
-                            <div class="name fs-5 fw-bold">${dataArr[i].nameDish}&emsp;<span class="order-number">${dataArr[i].orderNumber}</span></div>
-                            <div class="comment lh-1">${dataArr[i].comment}</div>
-                        </div>
-                        <div class="numerical-information px-3 d-flex flex-column justify-content-center">
-                            <div class="servings-quantity fs-3 fw-bold text-nowrap">x ${dataArr[i].quantity}</div>
-                            <div class="table-number fs-4">${dataArr[i].table}</div>
-                        </div>
-                        <div class="info-icon d-flex flex-column justify-content-center">
-                            <img src="images/icons/info.svg" class="chef-card icon" data-id = ${dataArr[i].id}></img>
-                            ${duplicateIcon}
-                        </div>
-                        <div class="card-button-block d-flex flex-column px-3 justify-content-center">
-                            <button class="confirm btn btn-success mb-1 text-uppercase cookReadyBtn" type="button" data-idDish= ${dataArr[i].idDish}>Готов</button>
-                            <button class="cancel btn btn-secondary text-uppercase cookCancelBtn" type="button" data-idDish= ${dataArr[i].idDish}>Отмена</button>
-                        </div>
-                    </div>`
-                )
-            }
-            // console.log(duplicate(dataArr, dataArr[i]))    // Проверка дубликата.
-        }
-        // console.log(currentOrders)
-    }
-
-    // придумать, как ввести модальное окно  при клике на инонку рецепта???????????
-
-    showListOrders(currentOrders)
-
-    let update = document.querySelector('#update')
-    update.addEventListener('click', updatingOrderList)
-
-    // setInterval(()=>updatingOrderList(), 2000)    // автообновление листа с заказами
-    function updatingOrderList() {                // функция обновления листа с заказами
-        listCards.innerHTML = ''
-        showListOrders(currentOrders)
-    }
-
-
-
-    listCards.addEventListener('click', sendingCookReady)   // прослушивание клика кнопки заказ приготовлен
-
-    function sendingCookReady(event) {
-        if(!event.target.closest('.cookReadyBtn')) {
-        return
-        }
-        console.log('готово')
-        // тут при клиике готово меняем статус в массиве на готово
-        console.log(getCurrentOrders())
-        for(let i = 0; i < currentOrders.length; i++ ) { 
-            // console.log(+currentOrders[i].idDish)
-            // console.log((+event.target.dataset.iddish))
-            if(+currentOrders[i].idDish == +event.target.dataset.iddish) {
-                // console.log(currentOrders[i].ready)
-                currentOrders[i].ready = true
-                // console.log(currentOrders[i].ready)
-                changeCurrentOrders(currentOrders)
-            }
-        }
-        console.log(getCurrentOrders())
-        event.target.closest('.order-card').classList.add('background-color-ready') // добавление цветовой маркировки при клике готово
-    }
-
-    listCards.addEventListener('click', sendingСookCancel)   // прослушивание клика кнопки заказ отменен
-    function sendingСookCancel(event) {
-        if(!event.target.closest('.cookCancelBtn')) {
-            return
-            }
-        console.log('Отмена')
-            // тут при клиике готово меняем статус в массиве на отмена
-        for(let i = 0; i < currentOrders.length; i++ ) {    
-            if(currentOrders[i].uniqueOrderDishNumber == (+event.target.dataset.uniqueorderdishnumber)) {
-                currentOrders[i].cancel = true
-            }
-        }
-        event.target.closest('.order-card').classList.add('cancel-background-color')
-        event.target.closest('.order-card') = ''
-    }
-}
 
 
 
