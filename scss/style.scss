@@ -15,6 +15,12 @@
   height: 100vh;
   background-color: #ececec;
 }
+
+.table {
+  width: 100px;
+  background-color: rgb(242, 242, 242);
+}
+
 // home-page 
 .home-page {
   background-image: url(/images/content_home.png);
@@ -54,13 +60,7 @@
     margin-top: 0.4rem;
   }
 }
-
-
-
-
-
-
-
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 // администратор
 
@@ -79,6 +79,7 @@
   }
 }
 
+///////////////////////////////////////////////////////////
 
 
 
@@ -112,10 +113,7 @@
   height:  35px;
 }
 
-// .table {
-//   width: 100px;
-//   background-color: rgb(242, 242, 242);
-// }
+
 
 .table-service {         // столик забронирован
   background-color: rgb(183, 255, 152);
