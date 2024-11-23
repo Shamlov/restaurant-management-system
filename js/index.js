@@ -11,18 +11,18 @@ homePage()     // Запуск стартовой страницы
 
 function homePage() {    // Формирование стартовой страницы 
     let homePage = `
-    <div class="home-page" >
-        <h1 class="p-3 text-center">Cиситема управления и автомаризации работы общепита</h1>
-        <p class="fs-4 px-3 text-center">Для продолжения работы, выберете соответствующий пункт</p>
-        <div class="selection-block px-4" id="selectionBlockHome">
-            <h2 class="fs-3 fw-bold" id="adminStart">Администратор</h2>
-            <h2 class="fs-3 fw-bold" id="kitchenStart">Кухня</h2>
-            <h2 class="fs-3 fw-bold" id="waiter1Start">Официант N 1</h2>
-            <h2 class="fs-3 fw-bold" id="waiter2Start">Официант дополнительно</h2>
-            <h2 class="fs-3 fw-bold" id="editingMenuStart">Страиница редактирования меню</h2>
-            <h2 class="fs-3 fw-bold" id="editingMenuStart">Складской учет</h2>
-            <h2 class="fs-3 fw-bold" id="editingMenuStart">История заказов</h2>
-            <h2 class="fs-3 fw-bold" id="editingMenuStart">Книга знаний</h2>
+    <div class="home-page general-style" >
+        <h1 class="p-3 text-center">Cистема управления и автоматизации работы общепита</h1>
+        <p class="fs-4 px-3 text-center">Выбери пункт меню</p>
+        <div class="selection-block px-4 mx-5" id="selectionBlockHome">
+            <h2 class="fs-3 fw-bold p-1" id="adminStart">Администратор</h2>
+            <h2 class="fs-3 fw-bold p-1" id="kitchenStart">Кухня</h2>
+            <h2 class="fs-3 fw-bold p-1" id="waiter1Start">Официант N 1</h2>
+            <h2 class="fs-3 fw-bold p-1" id="waiter2Start">Официант дополнительно</h2>
+            <h2 class="fs-3 fw-bold p-1" id="editingMenuStart">Страиница редактирования меню</h2>
+            <h2 class="fs-3 fw-bold p-1" id="editingMenuStart">Складской учет</h2>
+            <h2 class="fs-3 fw-bold p-1" id="editingMenuStart">История заказов</h2>
+            <h2 class="fs-3 fw-bold p-1" id="editingMenuStart">Книга знаний</h2>
         </div>
     </div>
     `;
@@ -58,12 +58,12 @@ function adminPage() {
 
     let tableNam = 0      // выбранный столик по умолчанию. в нем меняем значение переменной исходя из клика пользователя
     const adminStartHtml = `
-        <div class="window-kitchen container-fluid canvas-color pb-1">
-            <div class="top-menu-buttons menu-color p-1 mb-1 rounded d-flex">
-                <button type="button" class="btn btn-primary me-3 ms-5 text-uppercase" id="update">Обновить</button>
-                <button type="button" class="btn btn-primary text-uppercase me-3" id="homePageBtn">На главную</button>
-                <button type="button" class="btn btn-primary text-uppercase me-3" id="stopListBtn">Стоп-лист</button>
-                <button type="button" class="btn btn-primary text-uppercase me-3" id="goListListBtn">Гоу-лист</button>
+        <div class="window-kitchen general-style pb-1 general-style">
+            <div class="top-menu-buttons header  p-1 mb-1 rounded d-flex ">
+                <button type="button" class="btn text-uppercase me-3 ms-5" id="update">Обновить</button>
+                <button type="button" class="btn text-uppercase me-3" id="homePageBtn">На главную</button>
+                <button type="button" class="btn text-uppercase me-3" id="stopListBtn">Стоп-лист</button>
+                <button type="button" class="btn text-uppercase me-3" id="goListListBtn">Гоу-лист</button>
                 <p class="ms-auto px-4 fs-5">Администратор</p>
             </div>
     

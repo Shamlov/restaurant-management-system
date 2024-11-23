@@ -1,20 +1,63 @@
-.home-page {
+.color {
+  color: #f78888;
+  color: #f3d250;
+  color: #ececec;
+  color: #90ccf4;
+  color: #5da2d5;
+  color: #363636;
+}
+
+.general-style {
   max-width: 1200px;
   margin: 0 auto;
-  background-color: rgb(205, 205, 205);
   height: 100vh;
+  background-color: #ececec;
+}
+
+.home-page {
   background-image: url(/images/content_home.png);
-  background-position: 750px 300px;
+  background-position: 730px 300px;
   background-repeat: no-repeat;
 }
 .home-page h1 {
-  background-color: rgb(54, 54, 54);
-  color: rgb(220, 219, 217);
+  background-color: #363636;
+  color: #ececec;
 }
 .home-page h2:hover {
   color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.112);
   cursor: pointer;
+}
+
+.header {
+  background-color: #363636;
+}
+.header button {
+  background-color: #90ccf4;
+  font-weight: 700;
+}
+.header button:hover {
+  background-color: #5da2d5;
+}
+.header button:active {
+  background-color: #5da2d5 !important;
+}
+.header p {
+  color: #ececec;
+  margin-top: 0.4rem;
+}
+
+.active-table {
+  background-color: rgb(83, 255, 94);
+}
+
+.closed-check {
+  background-color: rgb(235, 228, 130);
+}
+
+.open-checks-container .icon {
+  width: 25px;
+  height: 25px;
 }
 
 .card-design {
@@ -35,11 +78,6 @@
 
 .icon {
   height: 35px;
-}
-
-.table {
-  width: 100px;
-  background-color: rgb(242, 242, 242);
 }
 
 .table-service {
@@ -66,19 +104,6 @@
 
 .cancel-background-color {
   background-color: rgb(255, 130, 130);
-}
-
-.active-table {
-  background-color: rgb(83, 255, 94);
-}
-
-.closed-check {
-  background-color: rgb(235, 228, 130);
-}
-
-.open-checks-container .icon {
-  width: 25px;
-  height: 25px;
 }
 
 .active-waiter-tables {
