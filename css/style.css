@@ -5,6 +5,8 @@
   color: #90ccf4;
   color: #5da2d5;
   color: #363636;
+  color: #88e78e;
+  color: #78cc7d;
 }
 
 .general-style {
@@ -12,11 +14,42 @@
   margin: 0 auto;
   height: 100vh;
   background-color: #ececec;
+  padding: 0 10px;
 }
 
 .table {
   width: 100px;
-  background-color: rgb(242, 242, 242);
+  background-color: #ececec;
+  border: 1px solid #363636;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.table:hover {
+  background-color: #d7d7d7;
+}
+
+.dish-line {
+  border-bottom: 1px solid #363636;
+}
+
+.my-btn {
+  background-color: #88e78e;
+  border: 1px solid #363636;
+}
+
+.my-btn:hover {
+  background-color: #78cc7d;
+  border: 1px solid #363636;
+}
+
+.my-btn:active {
+  background-color: #78cc7d !important;
+  border: 1px solid #363636;
+}
+
+.active-table {
+  background-color: #88e78e !important;
 }
 
 .home-page {
@@ -27,6 +60,9 @@
 .home-page h1 {
   background-color: #363636;
   color: #ececec;
+  margin: 0 -10px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 .home-page h2:hover {
   color: rgb(0, 0, 0);
@@ -36,6 +72,9 @@
 
 .header {
   background-color: #363636;
+  margin: 0 -10px;
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 .header button {
   background-color: #90ccf4;
@@ -52,12 +91,8 @@
   margin-top: 0.4rem;
 }
 
-.active-table {
-  background-color: rgb(83, 255, 94);
-}
-
 .closed-check {
-  background-color: rgb(235, 228, 130);
+  background-color: #f3d250;
 }
 
 .open-checks-container .icon {

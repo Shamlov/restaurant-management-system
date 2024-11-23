@@ -59,7 +59,7 @@ function adminPage() {
     let tableNam = 0      // выбранный столик по умолчанию. в нем меняем значение переменной исходя из клика пользователя
     const adminStartHtml = `
         <div class="window-kitchen general-style pb-1 general-style">
-            <div class="top-menu-buttons header  p-1 mb-1 rounded d-flex ">
+            <div class="top-menu-buttons header  p-1 mb-1 d-flex ">
                 <button type="button" class="btn text-uppercase me-3 ms-5" id="update">Обновить</button>
                 <button type="button" class="btn text-uppercase me-3" id="homePageBtn">На главную</button>
                 <button type="button" class="btn text-uppercase me-3" id="stopListBtn">Стоп-лист</button>
@@ -74,7 +74,7 @@ function adminPage() {
                 <div class="final-cost card-design" id="finalPrice"></div>
         
                 <div class="button-block">
-                    <button type="button" class="btn btn-success" id="btnCloseCheck">Закрыть чек</button>
+                    <button type="button" class="btn my-btn" id="btnCloseCheck">Закрыть чек</button>
                 </div>
             </div>
         </div>
@@ -165,7 +165,7 @@ function adminPage() {
         listCurrentOrders.forEach((el) => {
             
             if(el.table == table) {
-                elText += `<p class="mb-0">${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span><span>${showLogoStatusDish(el)}</span></span></p>`
+                elText += `<p class="mb-0 dish-line"><span>${showLogoStatusDish(el)}</span>${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span></span></p>`
             }
             
         })
