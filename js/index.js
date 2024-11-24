@@ -236,6 +236,30 @@ import { changeCurrentOrders } from './data.js';
 import { getListCurrentOrders } from './data.js';
 
 function kitchen() {
+    function modal(text) {
+        const modalBlock = document.querySelector('#modal')
+        modalBlock.innerHTML = `
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Запустите демо модального окна
+        </button>
+
+        <!-- Модальное окно -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Карта повора</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                ${text}
+            </div>
+            </div>
+        </div>
+        </div>
+    `
+    }
+
     
     let currentOrders     // переменная в которой находиться весь массив текущих заказов
 
@@ -247,6 +271,7 @@ function kitchen() {
 
     function kitchen() {
         let kitchen = ` 
+            <div id='modal'></div>
             <div class="window-kitchen general-style pb-1">
                 <div class="top-menu-buttons header p-1 mb-1 d-flex ">
                     <button type="button" class="btn text-uppercase me-3 ms-5" id="update">Обновить</button>
@@ -264,7 +289,7 @@ function kitchen() {
         app.innerHTML = kitchen;
     }
     kitchen()
-
+    modal()
 
 
     const homePageBtn = document.querySelector('#homePageBtn')
@@ -312,7 +337,7 @@ function kitchen() {
                             <div class="table-number fs-4">${dataArr[i].table}</div>
                         </div>
                         <div class="info-icon d-flex flex-column justify-content-center">
-                            <img src="images/icons/info.svg" class="chef-card icon" data-id = ${dataArr[i].id}></img>
+                            <img src="images/icons/info.svg" class="chef-card icon chef-card-btn"  data-id = ${dataArr[i].id} data-bs-toggle="modal" data-bs-target="#exampleModal"></img>
                             ${duplicateIcon}
                         </div>
                         <div class="card-button-block d-flex flex-column px-3 justify-content-center">
@@ -339,6 +364,23 @@ function kitchen() {
         listCards.innerHTML = ''
         showListOrders(currentOrders)
     }
+
+
+
+    // Кнопка модального окна
+    listCards.addEventListener('click', infoBtnGo)
+    function infoBtnGo(event) {
+        if(!event.target.closest('.chef-card-btn')) {
+            return
+        }
+        
+        modal(currentOrders[+event.target.dataset.id].description)
+        console.log(currentOrders[+event.target.dataset.id].description)
+    }
+
+
+
+
 
 
 
@@ -372,7 +414,6 @@ function kitchen() {
             // if(currentOrders[i].uniqueOrderDishNumber == (+event.target.dataset.uniqueorderdishnumber)) {
                 if(+currentOrders[i].idDish == +event.target.dataset.iddish) {
                 currentOrders[i].cancel = true
-                console.log(1111111111111)
             }
         }
         getCurrentOrders()
