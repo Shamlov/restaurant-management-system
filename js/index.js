@@ -165,7 +165,11 @@ function adminPage() {
         listCurrentOrders.forEach((el) => {
             
             if(el.table == table) {
-                elText += `<p class="mb-0 dish-line"><span>${showLogoStatusDish(el)}</span>${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span></span></p>`
+                let status = ''
+                if(el.cancel){
+                    status = 'cancel'
+                }
+                elText += `<p class="mb-0 dish-line ${status}"><span>${showLogoStatusDish(el)}</span>${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span></span></p>`
             }
             
         })
@@ -352,12 +356,8 @@ function kitchen() {
         // тут при клиике готово меняем статус в массиве на готово
         console.log(getCurrentOrders())
         for(let i = 0; i < currentOrders.length; i++ ) { 
-            // console.log(+currentOrders[i].idDish)
-            // console.log((+event.target.dataset.iddish))
             if(+currentOrders[i].idDish == +event.target.dataset.iddish) {
-                // console.log(currentOrders[i].ready)
                 currentOrders[i].ready = true
-                // console.log(currentOrders[i].ready)
                 changeCurrentOrders(currentOrders)
             }
         }
@@ -373,12 +373,18 @@ function kitchen() {
         console.log('Отмена')
             // тут при клиике готово меняем статус в массиве на отмена
         for(let i = 0; i < currentOrders.length; i++ ) {    
-            if(currentOrders[i].uniqueOrderDishNumber == (+event.target.dataset.uniqueorderdishnumber)) {
+            // if(currentOrders[i].uniqueOrderDishNumber == (+event.target.dataset.uniqueorderdishnumber)) {
+                if(+currentOrders[i].idDish == +event.target.dataset.iddish) {
                 currentOrders[i].cancel = true
+                console.log(1111111111111)
             }
         }
+        getCurrentOrders()
+        console.log(currentOrders)
         event.target.closest('.order-card').classList.add('cancel-background-color')
-        event.target.closest('.order-card') = ''
+        // console.log(event.target.closest('.order-card'))
+        setTimeout(()=>event.target.closest('.order-card').remove(), 2000)
+        
     }
 }
 
@@ -1060,6 +1066,7 @@ function writeOrdersArray(arrOrder) {    // запись заказа в мас�
         arrOrder[i].orderNumber = orderNumber
         arrOrder[i].table = arrOrder[0]
         arrOrder[i].ready = false
+        arrOrder[i].cancel = false
         arrOrder[i].issued = false
         arrOrder[i].idDish = orderNumber + i
     }
