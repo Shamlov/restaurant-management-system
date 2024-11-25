@@ -239,10 +239,6 @@ function kitchen() {
     function modal(text) {
         const modalBlock = document.querySelector('#modal')
         modalBlock.innerHTML = `
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Запустите демо модального окна
-        </button>
-
         <!-- Модальное окно -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -287,9 +283,10 @@ function kitchen() {
         `
 
         app.innerHTML = kitchen;
+        
     }
     kitchen()
-    modal()
+    
 
 
     const homePageBtn = document.querySelector('#homePageBtn')
@@ -337,7 +334,7 @@ function kitchen() {
                             <div class="table-number fs-4">${dataArr[i].table}</div>
                         </div>
                         <div class="info-icon d-flex flex-column justify-content-center">
-                            <img src="images/icons/info.svg" class="chef-card icon chef-card-btn"  data-id = ${dataArr[i].id} data-bs-toggle="modal" data-bs-target="#exampleModal"></img>
+                            <img src="images/icons/info.svg" class="chef-card icon chef-card-btn"  data-id = ${dataArr[i].id} ></img>
                             ${duplicateIcon}
                         </div>
                         <div class="card-button-block d-flex flex-column px-3 justify-content-center">
@@ -369,13 +366,43 @@ function kitchen() {
 
     // Кнопка модального окна
     listCards.addEventListener('click', infoBtnGo)
+    // function deleteAttribute(event) {   // удаление атребута кнопки модального окна
+    //     console.log(event)
+    //     if(!event.target.closest('.chef-card-btn')) {
+    //         return
+    //     }
+    //     delete event.target.closest('.chef-card-btn').dataset.bsToggle
+    //     delete event.target.closest('.chef-card-btn').dataset.bsTarget
+    // }
     function infoBtnGo(event) {
         if(!event.target.closest('.chef-card-btn')) {
             return
         }
-        
-        modal(currentOrders[+event.target.dataset.id].description)
-        console.log(currentOrders[+event.target.dataset.id].description)
+        console.log(+event.target.dataset.id)
+        for(let i = 0; i < currentOrders.length; i++) {
+            if(+event.target.dataset.id == currentOrders[i].id) {
+                // console.log(currentOrders[i].description)
+                modal(currentOrders[i].description)
+                event.target.closest('.chef-card-btn').setAttribute('data-bs-toggle', 'modal')
+                event.target.closest('.chef-card-btn').setAttribute('data-bs-target', '#exampleModal')
+
+                // document.querySelector('#modal').innerHTML = ''
+                
+            // delete event.target.closest('.chef-card-btn').dataset.bsToggle
+            // delete event.target.closest('.chef-card-btn').dataset.bsTarget
+            }
+
+        }
+        // document.querySelector('#modal').innerHTML = ''
+
+        // modal(currentOrders[+event.target.dataset.id].description)
+        // event.target.closest('.chef-card-btn').setAttribute('data-bs-toggle', 'modal')
+        // event.target.closest('.chef-card-btn').setAttribute('data-bs-target', '#exampleModal')
+
+        // console.log(currentOrders[+event.target.dataset.id].description)
+
+
+        // console.log(currentOrders[+event.target.dataset.id].description)
     }
 
 
