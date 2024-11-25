@@ -1188,12 +1188,12 @@ function issuance() {      // окно выдачи заказа
     let tableNam = 0      // выбранный столик по умолчанию. в нем меняем значение переменной исходя из клика пользователя
     
     const issuanceStartHtml = `
-        <div class="window-issuance container-fluid canvas-color pb-1">
+        <div class="window-issuance general-style  pb-1">
     
-            <div class="top-menu-buttons menu-color p-1 mb-1 rounded d-flex">
-                <button type="button" class="btn btn-primary p-1 me-sm-3 me-1 ms-sm-5 text-uppercase" id="update">Обновить</button>
-                <button type="button" class="btn btn-primary p-1 me-sm-3 me-1 text-uppercase" id="backBtn">Назад</button>
-                <button type="button" class="btn btn-primary p-1 me-sm-3 text-uppercase" id="homePageBtn">Домой</button>
+            <div class="top-menu-buttons header p-1 mb-1 d-flex">
+                <button type="button" class="btn p-1 ms-3   text-uppercase" id="update">Обновить</button>
+                <button type="button" class="btn p-1 ms-3  text-uppercase" id="backBtn">Назад</button>
+                <button type="button" class="btn p-1 ms-3  text-uppercase" id="homePageBtn">Домой</button>
                 <p class="ms-auto px-4 fs-5">Выдача</p>
             </div>
     
@@ -1278,8 +1278,9 @@ function issuance() {      // окно выдачи заказа
         let elText =''
         currentOrdersArr.forEach((el) => {
             if(el.table == numTable) {
-                let btnGiveOut = !el.issued ? `<button type="button" class="btn btn-success btn-sm">Выдать</button>` : ''    // это кнопка выдать
-                elText += `<p class="mb-0" data-idDish = ${el.idDish}>${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span><span>${showLogoStatusDish(el)}</span></span> ${btnGiveOut}</p>`
+                let btnGiveOut = !el.issued && el.ready  ? `<button type="button" class="btn btn-success btn-sm">Выдать</button>` : ''    // это кнопка выдать
+                let cancel = el.cancel ? 'cancel' : ''
+                elText += `<p class="mb-0 ${cancel}" data-idDish = ${el.idDish}><span>${showLogoStatusDish(el)}</span> ${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span> ${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span></span> ${btnGiveOut}</p>`
 
             }
         }

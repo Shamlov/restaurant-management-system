@@ -119,6 +119,14 @@
   background-color: #d07171;
 }
 
+.cancel-background-color {
+  background-color: #f78888 !important;
+}
+
+.background-color-ready {
+  background-color: #88e78e !important;
+}
+
 .card-design {
   background-color: rgb(255, 255, 255);
 }
@@ -147,14 +155,6 @@
 
 .price-button {
   width: 80px;
-}
-
-.background-color-ready {
-  background-color: rgb(83, 255, 94);
-}
-
-.cancel-background-color {
-  background-color: rgb(255, 130, 130);
 }
 
 .active-waiter-tables {
