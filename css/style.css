@@ -131,6 +131,16 @@
   background-color: rgb(255, 255, 255);
 }
 
+.stop-list {
+  border: solid 2px rgb(255, 0, 0);
+  background-color: rgb(255, 219, 219);
+}
+
+.go-list {
+  border: solid 2px rgb(145, 241, 0);
+  background-color: rgb(219, 255, 225);
+}
+
 .canvas-color {
   background-color: rgb(182, 182, 182);
 }
@@ -141,16 +151,6 @@
 
 .table-service {
   background-color: rgb(183, 255, 152);
-}
-
-.go-list {
-  border: solid 2px rgb(145, 241, 0);
-  background-color: rgb(219, 255, 225);
-}
-
-.stop-list {
-  border: solid 2px rgb(255, 0, 0);
-  background-color: rgb(255, 219, 219);
 }
 
 .price-button {

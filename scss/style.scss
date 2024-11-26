@@ -154,6 +154,35 @@
 
 /////////////
 
+.stop-list {   // карточка в стоп листе
+  border: solid 2px rgb(255, 0, 0);
+  background-color: rgb(255, 219, 219);
+}
+
+.go-list {  // карточка в гоу листе
+  border: solid 2px rgb(145, 241, 0);
+  background-color: rgb(219, 255, 225);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -183,15 +212,9 @@
   background-color: rgb(183, 255, 152);
 }
 
-.go-list {  // карточка в гоу листе
-  border: solid 2px rgb(145, 241, 0);
-  background-color: rgb(219, 255, 225);
-}
 
-.stop-list {   // карточка в стоп листе
-  border: solid 2px rgb(255, 0, 0);
-  background-color: rgb(255, 219, 219);
-}
+
+
 
 .price-button {
   width: 80px;

@@ -20,9 +20,9 @@ function homePage() {    // Формирование стартовой стра
             <h2 class="fs-3 fw-bold p-1" id="waiter1Start">Официант N 1</h2>
             <h2 class="fs-3 fw-bold p-1" id="waiter2Start">Официант дополнительно</h2>
             <h2 class="fs-3 fw-bold p-1" id="editingMenuStart">Страиница редактирования меню</h2>
-            <h2 class="fs-3 fw-bold p-1" id="editingMenuStart">Складской учет</h2>
-            <h2 class="fs-3 fw-bold p-1" id="editingMenuStart">История заказов</h2>
-            <h2 class="fs-3 fw-bold p-1" id="editingMenuStart">Книга знаний</h2>
+            <h2 class="fs-3 fw-bold p-1">Складской учет</h2>
+            <h2 class="fs-3 fw-bold p-1">История заказов</h2>
+            <h2 class="fs-3 fw-bold p-1">Книга знаний</h2>
         </div>
     </div>
     `;
@@ -503,7 +503,7 @@ function kitchenМenu() {                // страница оицианта
             <button type="button" class="btn text-uppercase me-3" id="issuanceBtn">Выдача</button>
             <select id="selectedTable" class="table form-select p-1 w-25 mb-0">
                 <option selected value='0'>Выбранный столик</option>
-                ${listTables()}   
+                ${listTables()} 
             </select>
             <p class="ms-auto px-4 fs-5">Официант</p>
             <img src="/images/icons/listOrders.svg" class="chef-card icon ms-auto" id="orderReceiptButton"></img>
@@ -694,21 +694,17 @@ function editingMenu() {      // страница редактирования �
 </div>
 <!-- ................ -->
 
-<div class="kitchen-menu container-fluid canvas-color pb-1 p-0">
-    <div class="top-menu-buttons menu-color p-1 mb-1 rounded d-flex p-0  position-fixed w-100">
+<div class="kitchen-menu general-style pb-1 p-0">
+    <div class="top-menu-buttons header p-1 mb-1 d-flex p-1 mb-1">
+        <button type="button" class="btn me-3 ms-1 text-uppercase" id="homePageBtn">На главную</button>
         <div class="dropdown p-0 me-sm-3 me-1">
-            <button class="btn btn-secondary dropdown-toggle text-uppercase" id="homePageBtn">
-                На главную
-            </button>
-        </div>
-        <div class="dropdown p-0 me-sm-3 me-1">
-            <button class="btn btn-secondary dropdown-toggle text-uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn dropdown-toggle text-uppercase h-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Меню
             </button>
             <ul class="dropdown-menu" id="restaurantCategoriesTopMenu"></ul>
         </div>
-            <button class="edit btn btn-success mb-1 p-1 fs-5" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Добавить</button>
-            <h4 class="ms-auto">Редактирование</h4>
+        <button class="edit btn me-3 ms-1 text-uppercase" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Добавить</button>
+        <p class="ms-auto px-4 fs-5">Редактирование</p>
     </div>
         
     <div class="kitchen-menu-block list-cards p-1 pt-5" id="menuCategories"></div>
@@ -852,10 +848,11 @@ function editingMenu() {      // страница редактирования �
 function stopList() {
 
     let stopListHeader = `    
-    <div class="window-kitchen container-fluid canvas-color pb-1">
-        <div class="top-menu-buttons menu-color p-1 mb-1 rounded">
-            <button type="button" class="btn btn-primary me-3 ms-5 text-uppercase me-3 ms-5" id="backBtnStopList">Назад</button>
-            <button type="button" class="btn btn-primary me-3 ms-5 text-uppercase" id="saveBtn">Сохранить</button>
+    <div class="window-kitchen general-style pb-1">
+        <div class="top-menu-buttons header p-1 mb-1 d-flex">
+            <button type="button" class="btn me-3 ms-5 text-uppercase me-3 ms-5" id="backBtnStopList">Назад</button>
+            <button type="button" class="btn me-3 ms-5 text-uppercase" id="saveBtn">Сохранить</button>
+            <p class="ms-auto px-4 fs-5">Стоп-лист</p>
         </div>
         
         <div class="stop-list-block">
@@ -942,10 +939,11 @@ function stopList() {
 /// Гоу- лист 
 function goList() {
     let goListHeader = `
-    <div class="window-kitchen container-fluid canvas-color pb-1">
-        <div class="top-menu-buttons menu-color p-1 mb-1 rounded">
-            <button type="button" class="btn btn-primary me-3 ms-5 text-uppercase me-3 ms-5" id="backBtnGoList">Назад</button>
-            <button type="button" class="btn btn-primary me-3 ms-5 text-uppercase" id="saveBtn">Сохранить</button>
+    <div class="window-kitchen general-style pb-1">
+        <div class="top-menu-buttons header p-1 mb-1 d-flex ">
+            <button type="button" class="btn me-3 ms-5 text-uppercase me-3 ms-5" id="backBtnGoList">Назад</button>
+            <button type="button" class="btn me-3 ms-5 text-uppercase" id="saveBtn">Сохранить</button>
+            <p class="ms-auto px-4 fs-5">Гоу-лист</p>
         </div>
         
         <div class="stop-list-block">
