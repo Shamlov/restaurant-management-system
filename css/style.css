@@ -131,6 +131,10 @@
   background-color: rgb(255, 255, 255);
 }
 
+.product-line {
+  background-color: rgb(255, 255, 255);
+}
+
 .stop-list {
   border: solid 2px rgb(255, 0, 0);
   background-color: rgb(255, 219, 219);

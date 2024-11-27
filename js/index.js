@@ -236,26 +236,6 @@ import { changeCurrentOrders } from './data.js';
 import { getListCurrentOrders } from './data.js';
 
 function kitchen() {
-    function modal(text) {
-        const modalBlock = document.querySelector('#modal')
-        modalBlock.innerHTML = `
-        <!-- Модальное окно -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Карта повора</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body">
-                ${text}
-            </div>
-            </div>
-        </div>
-        </div>
-    `
-    }
-
     
     let currentOrders     // переменная в которой находиться весь массив текущих заказов
 
@@ -267,7 +247,21 @@ function kitchen() {
 
     function kitchen() {
         let kitchen = ` 
-            <div id='modal'></div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Заголовок модального окна</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body" id="motalText">
+                ...
+                </div>
+            </div>
+            </div>
+        </div>
+
+
             <div class="window-kitchen general-style pb-1">
                 <div class="top-menu-buttons header p-1 mb-1 d-flex ">
                     <button type="button" class="btn text-uppercase me-3 ms-5" id="update">Обновить</button>
@@ -334,7 +328,7 @@ function kitchen() {
                             <div class="table-number fs-4">${dataArr[i].table}</div>
                         </div>
                         <div class="info-icon d-flex flex-column justify-content-center">
-                            <img src="images/icons/info.svg" class="chef-card icon chef-card-btn"  data-id = ${dataArr[i].id} ></img>
+                            <img src="images/icons/info.svg" class="chef-card icon chef-card-btn" data-bs-toggle="modal" data-bs-target="#exampleModal" data-id = ${dataArr[i].id} ></img>
                             ${duplicateIcon}
                         </div>
                         <div class="card-button-block d-flex flex-column px-3 justify-content-center">
@@ -378,13 +372,18 @@ function kitchen() {
         if(!event.target.closest('.chef-card-btn')) {
             return
         }
+        function updateModalContent (title, text) {
+            document.querySelector('#exampleModalLabel').innerText = title
+            document.querySelector('#motalText').innerText = text
+        }
         console.log(+event.target.dataset.id)
         for(let i = 0; i < currentOrders.length; i++) {
             if(+event.target.dataset.id == currentOrders[i].id) {
+                updateModalContent(currentOrders[i].nameDish, currentOrders[i].recipe)
                 // console.log(currentOrders[i].description)
-                modal(currentOrders[i].description)
-                event.target.closest('.chef-card-btn').setAttribute('data-bs-toggle', 'modal')
-                event.target.closest('.chef-card-btn').setAttribute('data-bs-target', '#exampleModal')
+                // modal(currentOrders[i].description)
+                // event.target.closest('.chef-card-btn').setAttribute('data-bs-toggle', 'modal')
+                // event.target.closest('.chef-card-btn').setAttribute('data-bs-target', '#exampleModal')
 
                 // document.querySelector('#modal').innerHTML = ''
                 
@@ -939,7 +938,7 @@ function stopList() {
 /// Гоу- лист 
 function goList() {
     let goListHeader = `
-    <div class="window-kitchen general-style pb-1">
+    <div class="window-kitchen general-style pb-1 ">
         <div class="top-menu-buttons header p-1 mb-1 d-flex ">
             <button type="button" class="btn me-3 ms-5 text-uppercase me-3 ms-5" id="backBtnGoList">Назад</button>
             <button type="button" class="btn me-3 ms-5 text-uppercase" id="saveBtn">Сохранить</button>
@@ -1050,18 +1049,18 @@ function goList() {
 
 function addingOrder1() {
     let addingOrderHtmlCode = `
-        <div class="kitchen-menu container-fluid canvas-color pb-1 p-0">
+        <div class="kitchen-menu general-style pb-1">
 
-        <div class="top-menu-buttons menu-color p-1 mb-1 rounded d-flex p-0  position-fixed w-100">
-            <div class="dropdown p-0 me-sm-3 me-1">
-                <button type="button" class="btn btn-primary me-3 ms-1 text-uppercase" id="update">Обновить</button>
-                <button type="button" class="btn btn-primary text-uppercase me-3" id="homePageBtn">На главную</button>
+        <div class="top-menu-buttons p-1 mb-1 d-flex p-0 header ">
+            <div class="dropdown p-0 me-sm-3 me-1 ">
+                <button type="button" class="btn me-3 ms-1 text-uppercase" id="update">Обновить</button>
+                <button type="button" class="btn text-uppercase me-3" id="homePageBtn">На главную</button>
             </div>
-            <span class="align-self-center fw-bold"">Столик ${intermediateOrder[0]}</span>
-            <button class="btn btn-secondary ms-auto text-uppercase" id="confirmBtn">Верно</button>
+            <p class="align-self-center fw-bold">Столик ${intermediateOrder[0]}</p>
+            <button class="btn ms-auto text-uppercase" id="confirmBtn">Верно</button>
         </div>
 
-        <div class="adding-order pt-5 px-2" id="addingOrder"></div>
+        <div class="adding-order pt-1 px-2" id="addingOrder"></div>
 
         <div class="price-block d-flex justify-content-end pe-4 fs-5 fw-bold">
             <span>Итого: &emsp;</span>
@@ -1076,7 +1075,7 @@ function addingOrder1() {
     for(let i = 1; i < intermediateOrder.length; i++ ) {
         // console.log(intermediateOrder[i])
         addingOrder.insertAdjacentHTML('beforeEnd', `
-            <div class="product-line border-bottom border-2 border-black border-opacity-50" data-intermediateOrderId = ${i}>
+            <div class="product-line border-bottom my-2 border-2 border-black border-opacity-50" data-intermediateOrderId = ${i}>
                 <div class="d-flex">
                     <div class="me-2">
                         <img class="icon" src="/images/icons/delete.svg" alt="">
