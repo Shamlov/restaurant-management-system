@@ -343,7 +343,6 @@ function kitchen() {
         // console.log(currentOrders)
     }
 
-    // придумать, как ввести модальное окно  при клике на инонку рецепта???????????
 
     showListOrders(currentOrders)
 
@@ -360,14 +359,6 @@ function kitchen() {
 
     // Кнопка модального окна
     listCards.addEventListener('click', infoBtnGo)
-    // function deleteAttribute(event) {   // удаление атребута кнопки модального окна
-    //     console.log(event)
-    //     if(!event.target.closest('.chef-card-btn')) {
-    //         return
-    //     }
-    //     delete event.target.closest('.chef-card-btn').dataset.bsToggle
-    //     delete event.target.closest('.chef-card-btn').dataset.bsTarget
-    // }
     function infoBtnGo(event) {
         if(!event.target.closest('.chef-card-btn')) {
             return
@@ -380,34 +371,9 @@ function kitchen() {
         for(let i = 0; i < currentOrders.length; i++) {
             if(+event.target.dataset.id == currentOrders[i].id) {
                 updateModalContent(currentOrders[i].nameDish, currentOrders[i].recipe)
-                // console.log(currentOrders[i].description)
-                // modal(currentOrders[i].description)
-                // event.target.closest('.chef-card-btn').setAttribute('data-bs-toggle', 'modal')
-                // event.target.closest('.chef-card-btn').setAttribute('data-bs-target', '#exampleModal')
-
-                // document.querySelector('#modal').innerHTML = ''
-                
-            // delete event.target.closest('.chef-card-btn').dataset.bsToggle
-            // delete event.target.closest('.chef-card-btn').dataset.bsTarget
             }
-
         }
-        // document.querySelector('#modal').innerHTML = ''
-
-        // modal(currentOrders[+event.target.dataset.id].description)
-        // event.target.closest('.chef-card-btn').setAttribute('data-bs-toggle', 'modal')
-        // event.target.closest('.chef-card-btn').setAttribute('data-bs-target', '#exampleModal')
-
-        // console.log(currentOrders[+event.target.dataset.id].description)
-
-
-        // console.log(currentOrders[+event.target.dataset.id].description)
     }
-
-
-
-
-
 
 
     listCards.addEventListener('click', sendingCookReady)   // прослушивание клика кнопки заказ приготовлен
@@ -869,7 +835,7 @@ function stopList() {
 
     async function requestListStopCategories() {                  // имитируем запрос на сервер
         // insertStopCategoryList(restaurantMenuCategories)
-        insertStopCategoryList(getRestaurantMenuCategories())
+        insertStopCategoryList (getRestaurantMenuCategories())
     }
     requestListStopCategories()
 
@@ -886,10 +852,11 @@ function stopList() {
 
 
     function showCheckboxList(data) {                  // вывод на экран чекбоксов по категориям 
-        // console.log(data)                              // видим что каждый элемент приходит в функцию
+        console.log(data)                              // видим что каждый элемент приходит в функцию
         let menuCategoryCheckbox = document.getElementsByClassName('menuCategoryCheckbox')
         for(let i = 0; i < menuCategoryCheckbox.length; i++) {
             if(menuCategoryCheckbox[i].textContent == data.category) {
+                console.log(data.category)
                 let choice = ""
                 if(data.stop) {
                     choice = 'checked'
@@ -916,6 +883,7 @@ function stopList() {
         const inputChek = document.getElementsByClassName('inputChek')
         for(let i = 0; i < inputChek.length; i++) {         // в данном цикле идем без привязки к ID поэтому beforeBegin важен порядок . не меняем  menuCategoryCheckbox[i].insertAdjacentHTML('beforeBegin',
             if(inputChek[i].checked) {
+                // console.log(listDishesMenu[i].stop)
                 let listDishesMenu = getListDishesMenu()
                 listDishesMenu[i].stop = true
                 changeListDishesMenu(listDishesMenu)
@@ -928,7 +896,7 @@ function stopList() {
                 // listDishesMenu[i].stop = false
             }
             
-                // console.log(inputChek[i].checked)    // проверка  состояния чекбокса
+                console.log(inputChek[i].checked)    // проверка  состояния чекбокса
         }
         
         console.log(getListDishesMenu(), 'проверяем внесенные изменения')
