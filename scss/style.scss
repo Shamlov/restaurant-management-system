@@ -12,13 +12,33 @@
 
 }
 //////////////////////////////////////////////////////////////
+.modal-save {
+  background-color: #88e78e;
+  &:hover {
+    background-color: #78cc7d;
+  }
+}
+
+.modal-delete {
+  background-color: #f78888;
+  &:hover {
+    background-color: #d07171;
+  }
+}
+
+.modal-close {
+  background-color: #b5b0b0;
+  &:hover {
+    background-color: #9b9898;
+  }
+}
 
 .general-style {
   max-width: 1200px;
   margin: 0 auto;
   height: 100vh;
   background-color: #ececec;
-  padding: 0 10px;
+  padding: 0 10px !important;
   background-image: url(/images/content_home.png);
   background-position: 730px 300px;
   background-repeat: no-repeat;

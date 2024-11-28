@@ -630,7 +630,7 @@ function editingMenu() {      // страница редактирования �
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Название блюда</h1>
+                <h1 class="modal-title fs-5 text-uppercase" id="exampleModalLabel">Добавить / изменить</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div>
             <div class="modal-body">
@@ -650,9 +650,9 @@ function editingMenu() {      // страница редактирования �
                 <textarea class="form-control" aria-label="С текстовым полем" id="recipe"></textarea>
             </div>
             <div class="modal-footer" id="modalButtons">
-                <button type="button" class="btn btn-danger" data-delete data-bs-dismiss="modal">Удалить</button>
-                <button type="button" class="btn btn-secondary" data-close data-bs-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary" data-save data-bs-dismiss="modal">Сохранить изменения</button>
+                <button type="button" class="btn modal-delete fw-bold" data-delete data-bs-dismiss="modal" id="deleteBtn">Удалить</button>
+                <button type="button" class="btn modal-close fw-bold" data-close data-bs-dismiss="modal" id="cancelBtn">Закрыть</button>
+                <button type="button" class="btn modal-save fw-bold" data-save data-bs-dismiss="modal" id="saveBtn">Сохранить изменения</button>
             </div>
         </div>
     </div>
@@ -672,7 +672,7 @@ function editingMenu() {      // страница редактирования �
         <p class="ms-auto px-4 fs-5">Редактирование</p>
     </div>
         
-    <div class="kitchen-menu-block list-cards p-1 pt-5" id="menuCategories"></div>
+    <div class="kitchen-menu-block list-cards p-1" id="menuCategories"></div>
 </div>
 `
     app.innerHTML = sditingMenu;
@@ -733,12 +733,11 @@ function editingMenu() {      // страница редактирования �
             this.recipe = recipe
         }
     }
-    
+    const price = document.querySelector('#price')
+    const nameDish = document.querySelector('#nameDish')
+    const description = document.querySelector('#description')
+    const recipe = document.querySelector('#recipe')
     function getDataFormChangeDish () {     // функция сбора данных из формы
-        const price = document.querySelector('#price')
-        const nameDish = document.querySelector('#nameDish')
-        const description = document.querySelector('#description')
-        const recipe = document.querySelector('#recipe')
         let data = new dishСard(elementRestaurantMenuCategoriesModal.value, price.value, nameDish.value, description.value, recipe.value,)
         sendDataServer(data)
     }
@@ -749,7 +748,9 @@ function editingMenu() {      // страница редактирования �
         listDishesMenu.push(data)
         changeListDishesMenu(listDishesMenu)
         showMenuCards(data)
-        console.log(getListDishesMenu())
+        console.log(23456337488)
+        clearModal()
+
     }
     
     // вывод катрочек блюд на экран
@@ -778,7 +779,7 @@ function editingMenu() {      // страница редактирования �
                             <div class="comment lh-1">${data.recipe}</div>
                         </div>
                         <div class="card-button-block d-flex flex-column px-3 justify-content-center">
-                            <button class="edit btn btn-success mb-1 p-1 fs-5" type="button" data-id = ${data.id} data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать</button>
+                            <button class="edit btn modal-save mb-1 p-1 fs-5" type="button" data-id = ${data.id} data-bs-toggle="modal" data-bs-target="#exampleModal">Редактировать</button>
                         </div>
                     </div>`
                 )
@@ -791,11 +792,25 @@ function editingMenu() {      // страница редактирования �
     menuCategories.addEventListener('click', editSingleElement)
     function editSingleElement(event) {
         
-        console.log(event.target)
+        console.log(+event.target.dataset.id)
+        let ListDishesMenu = getListDishesMenu()
+        // console.log(ListDishesMenu)
+        for(let i = 0; i < ListDishesMenu.length; i++) {
+            // console.log(ListDishesMenu[i])
+            if(+event.target.dataset.id == ListDishesMenu[i].id) {
+            price.value = +ListDishesMenu[i].price
+            nameDish.innerText = ListDishesMenu[i].nameDish
+            description.innerText = ListDishesMenu[i].description
+            recipe.innerText = ListDishesMenu[i].recipe
+            }
+        }
     }
     
-    // реализовать сброс данных модального окна поле кахдого добавления блюда/ пока не знаю как
-    // реализовать якоря при выборе категорий блюд.  пока не знаю как
+    function clearModal() {       //   очистка данных модального окна
+        // тут вписать код очистки модального окна
+    }
+
+
     // самое сложное реализовать редактирование и удаление каждого блюда через модальное окно бутстрап, ID блюд уже проставлены.  
 }
 
