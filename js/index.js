@@ -246,6 +246,7 @@ function kitchen() {
     // setInterval(()=>getCurrentOrders(), 2000)     // синхронизируем данные с удаленным хранилищем
 
     function kitchen() {
+
         let kitchen = ` 
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -446,21 +447,6 @@ function kitchenМenu() {                // страница оицианта
     let listDishesMenu = getListDishesMenu()   // не забыть обновлять при клике на кнопку обновить и по таймеру
     let restaurantMenuCategories = getRestaurantMenuCategories()      //  получим категории меню в переменную
     let headerKitchenМenu = `
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Шашлык по-кавказски из свинины с луком</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Невероятный аромат и вкус шашлыка у многих ассоциируется с весенне-летней порой. Это блюдо неизменно связано с кавказской кухней. Считается, что именно представители Кавказа разбираются в том, как мариновать и как готовить мясо. состав: свинина, лук, специи , 1000 ККал</p>
-                </div>
-            </div>
-        </div>
-        </div>
-    </div>
-    
     <div class="kitchen-menu general-style pb-1">
         <div class="top-menu-buttons header p-1 mb-1 d-flex">
             <button type="button" class="btn me-3 ms-1 text-uppercase" id="update">Обновить</button>
