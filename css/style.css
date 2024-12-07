@@ -141,11 +141,13 @@
 }
 
 .cancel-background-color {
-  background-color: #f78888 !important;
+  border: solid 2px rgb(255, 0, 0) !important;
+  background-color: rgb(255, 219, 219) !important;
 }
 
 .background-color-ready {
-  background-color: #88e78e !important;
+  border: solid 2px rgb(145, 241, 0) !important;
+  background-color: rgb(219, 255, 225) !important;
 }
 
 .card-design {
