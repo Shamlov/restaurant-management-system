@@ -169,7 +169,7 @@ function adminPage() {
                 if(el.cancel){
                     status = 'cancel'
                 }
-                elText += `<p class="mb-0 dish-line ${status}"><span>${showLogoStatusDish(el)}</span>${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span></span></p>`
+                elText += `<p class="mb-0 dish-line ${status}"><span>${showLogoStatusDish(el)}</span>${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span>${el.quantity} шт.</span>&emsp;<span>${el.time}</span>&emsp;<span>${el.price * el.quantity} р.</span></span></p>`
             }
             
         })
@@ -1096,6 +1096,7 @@ function writeOrdersArray(arrOrder) {    // запись заказа в мас�
         arrOrder[i].cancel = false
         arrOrder[i].issued = false
         arrOrder[i].idDish = orderNumber + i
+        arrOrder[i].comment = 'Ваш комментарий'
     }
     let currentOrders1 = getListCurrentOrders()
 
