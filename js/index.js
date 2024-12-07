@@ -816,7 +816,8 @@ function stopList() {
     let stopListHeader = `    
     <div class="window-kitchen general-style pb-1">
         <div class="top-menu-buttons header p-1 mb-1 d-flex">
-            <button type="button" class="btn me-3 ms-5 text-uppercase me-3 ms-5" id="backBtnStopList">Назад</button>
+            <button type="button" class="btn me-3 ms-2 text-uppercase " id="backBtnStopList">Администратор</button>
+            <button type="button" class="btn me-3  text-uppercase " id="backBtnStopList1">Кухня</button>
             <button type="button" class="btn me-3 ms-5 text-uppercase" id="saveBtn">Сохранить</button>
             <p class="ms-auto px-4 fs-5">Стоп-лист</p>
         </div>
@@ -832,7 +833,9 @@ function stopList() {
     const stopList = document.querySelector('#stopList')
 
     const backBtnStopList = document.querySelector('#backBtnStopList');
-    backBtnStopList.addEventListener('click', kitchen)
+    backBtnStopList.addEventListener('click', adminPage)
+    const backBtnStopList1 = document.querySelector('#backBtnStopList1');
+    backBtnStopList1.addEventListener('click', kitchen)
 
     async function requestListStopCategories() {                  // имитируем запрос на сервер
         // insertStopCategoryList(restaurantMenuCategories)
@@ -909,7 +912,8 @@ function goList() {
     let goListHeader = `
     <div class="window-kitchen general-style pb-1 ">
         <div class="top-menu-buttons header p-1 mb-1 d-flex ">
-            <button type="button" class="btn me-3 ms-5 text-uppercase me-3 ms-5" id="backBtnGoList">Назад</button>
+            <button type="button" class="btn me-3 ms-2 text-uppercase" id="backBtnGoList">Администратор</button>
+            <button type="button" class="btn me-3 ms-2 text-uppercase"  id="backBtnGoList1">Кухня</button>
             <button type="button" class="btn me-3 ms-5 text-uppercase" id="saveBtn">Сохранить</button>
             <p class="ms-auto px-4 fs-5">Гоу-лист</p>
         </div>
@@ -925,7 +929,10 @@ function goList() {
     const goList = document.querySelector('#goList')
 
     const backBtnGoList = document.querySelector('#backBtnGoList');
-    backBtnGoList.addEventListener('click', kitchen)
+    backBtnGoList.addEventListener('click', adminPage)
+
+    const backBtnGoList1 = document.querySelector('#backBtnGoList1');
+    backBtnGoList1.addEventListener('click', kitchen)
 
     async function requestListGoCategories() {                  // имитируем запрос на сервер
         insertGoCategoryList(getRestaurantMenuCategories())
