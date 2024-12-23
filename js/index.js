@@ -1,5 +1,5 @@
 const app = document.querySelector('#app');
-import { changeRestaurantMenuCategories } from './data.js'
+
 import { getRestaurantMenuCategories } from './data.js'
 import { changeListDishesMenu } from './data.js'
 import { getListDishesMenu } from './data.js'
@@ -9,7 +9,7 @@ homePage()     // Запуск стартовой страницы
 
 //  Стартовая страница  ----->>>>>      /////////////////////////////////////////////////////////
 
-function homePage() {    // Формирование стартовой страницы 
+function homePage() {  
     let homePage = `
     <div class="home-page general-style" >
         <h1 class="p-3 text-center">Cистема управления и автоматизации работы общепита</h1>
@@ -27,24 +27,24 @@ function homePage() {    // Формирование стартовой стра
     </div>
     `;
 
-    app.innerHTML = homePage;      // заполняем HTML кодом стартовую страницу при запуске приложения
+    app.innerHTML = homePage;      
 
     const selectionBlockHome = document.querySelector('#selectionBlockHome')    
-    selectionBlockHome.addEventListener('click', homeMenuSelection)             // отслидим клики пользователя по пунктам меню на стартовой странице. идем методом делегирования
+    selectionBlockHome.addEventListener('click', homeMenuSelection)             
     function homeMenuSelection(event) {                                
-        if(event.target.closest('#adminStart')) {               // клик по пункту Администратор
-            adminPage()        // запускаем страницу администратора
+        if(event.target.closest('#adminStart')) {              
+            adminPage()        
         }
-        if(event.target.closest('#kitchenStart')) {       // клик по пункту Кухня
-            kitchen()          // запускаем страницу кухни
+        if(event.target.closest('#kitchenStart')) {       
+            kitchen()         
         }
-        if(event.target.closest('#waiter1Start')) {    // клик по пункту Официант N 1
-            kitchenМenu()       // запуск функции меню официанта
+        if(event.target.closest('#waiter1Start')) {
+            kitchenМenu()
         }
         if(event.target.closest('#waiter2Start')) {
             alert ("Для подключения дополнительного сторудника, обратитесь к разработчику")
         }
-        if(event.target.closest('#editingMenuStart')) {    // клик по пункту Страиница редактирования меню
+        if(event.target.closest('#editingMenuStart')) {
             editingMenu()
         }
     }
@@ -56,7 +56,7 @@ function homePage() {    // Формирование стартовой стра
 
 function adminPage() {
 
-    let tableNam = 0      // выбранный столик по умолчанию. в нем меняем значение переменной исходя из клика пользователя
+    let tableNam = 0
     const adminStartHtml = `
         <div class="window-kitchen pb-1 general-style">
             <div class="top-menu-buttons header  p-1 mb-1 d-flex ">
@@ -79,26 +79,23 @@ function adminPage() {
             </div>
         </div>
     `
-    app.innerHTML = adminStartHtml      //  отрисовываем страницу администатора
-
+    app.innerHTML = adminStartHtml    
     
     let update = document.querySelector('#update')
-    update.addEventListener('click', adminPage)        //  вызов функции по отрисовке текущей страницы (обновление)
-    // setInterval(adminPage, 10000)                      //  автоматическое обновление текущей страницы через временной интервал 10 сек
+    update.addEventListener('click', adminPage)       
 
     const homePageBtn = document.querySelector('#homePageBtn')
-    homePageBtn.addEventListener('click', homePage)      //  вызов функции по отрисовке стартовой страницы
+    homePageBtn.addEventListener('click', homePage)
 
     let stopListBtn = document.querySelector('#stopListBtn')
-    stopListBtn.addEventListener('click', stopList )     // вызов функции по отрисовке стоп-лист страницы
+    stopListBtn.addEventListener('click', stopList )
 
     let goListListBtn = document.querySelector('#goListListBtn')
-    goListListBtn.addEventListener('click', goList )     // вызов функции по отрисовке гоу-лист страницы
+    goListListBtn.addEventListener('click', goList )
     
 
     const lisTables = document.querySelector('#lisTables')
     
-    // дополнительно ввести и принимать в функцию данные о заказах
     function htmlBlockTablesFormation(dataArr) {
         lisTables.innerHTML = ''
         for(let i = 0; i < dataArr.length; i++) {
@@ -114,41 +111,40 @@ function adminPage() {
     }
     htmlBlockTablesFormation(getListTables())
     
-    function sumorderAmountTable(tableNumber) {      // принимает номер столика и возвращает сумму всех чеков по этому столику 
+    function sumorderAmountTable(tableNumber) {      
         return getListCurrentOrders()
             .filter(x => x.table === tableNumber)
             .reduce((a, x) => a + x.price * x.quantity, 0);
     }
     
-    function issuedSumorderAmountTable(tableNumber) {      // принимает номер столика и возвращает сумму выданных
+    function issuedSumorderAmountTable(tableNumber) {     
             return getListCurrentOrders()
             .filter(x => (x.table === tableNumber) && x.issued)
             .reduce((a, x) => a + x.price * x.quantity, 0);
     }
-    
-    // цветовая маркировка выбранного столика
+
     const finalPriceEl = document.querySelector('#finalPrice')
     lisTables.addEventListener('click', userTableSelection)  
     
     
     
-    function userTableSelection(event) {    // показ итоговой стоимости заказанных товаров внизу ИТОГО
+    function userTableSelection(event) {    
         if(!event.target.closest('.table')) {
             return
         }
-        // добавляем цветовую маркировку блокам с выбранным столиком 
+
         let arr = event.currentTarget.children
         for(let el of arr) {
             el.classList.remove('active-table')
         }
         event.target.closest('.table').classList.add('active-table')
     
-        finalPrice(event.target.closest('.table').dataset.table)  //передаем в функцию показа стоимости номер выбранного столика
-        showTableReceiptList(event.target.closest('.table').dataset.table)   //передаем в функцию показа чеков номер выбранного столика
+        finalPrice(event.target.closest('.table').dataset.table)
+        showTableReceiptList(event.target.closest('.table').dataset.table)
         tableNam = event.target.closest('.table').dataset.table
     }
     
-    //формирование финальной цены
+
     function finalPrice(table) {
         finalPriceEl.innerHTML = `
             <h4>Итого: <span class="d-inline-block ms-4 fw-bold">${issuedSumorderAmountTable(+table)}<span> p.</span></span></h4>
@@ -159,11 +155,8 @@ function adminPage() {
     function showTableReceiptList(table) {
         openChecksContainer.innerHTML = ''
         let listCurrentOrders = getListCurrentOrders()
-        // let arrListCurrentOrders = []
         let elText =''
-        let elComment =''
         listCurrentOrders.forEach((el) => {
-            
             if(el.table == table) {
                 let status = ''
                 if(el.cancel){
@@ -183,7 +176,7 @@ function adminPage() {
     }
     
     
-    function removeTableData(table) {     // Удаление из объекта заказа с выбранным столиком
+    function removeTableData(table) {    
         console.log(getListCurrentOrders())
         let listCurrentOrders = getListCurrentOrders()
         let newListCurrentOrders = []
@@ -206,7 +199,7 @@ function adminPage() {
         htmlBlockTablesFormation(getListTables())
     }
     
-    function colorMarkingClosedCheck() {    // цветовая маркировка закрытого чека
+    function colorMarkingClosedCheck() {
         let openChecks = document.querySelectorAll('.open-checks > p')
         openChecks.forEach((el) => {
             el.classList.add('closed-check')
@@ -215,35 +208,20 @@ function adminPage() {
 
     
     
-    function ready (el) {                                        // вывод логотипа статуса блюда
-        let htmlImg = `<img src="images/icons/cook.png" class="chef-card icon ms-2"></img>`
-        console.log(el)
-        if(el.ready) {
-            htmlImg = `<img src="images/icons/ready-meal.png" class="chef-card icon ms-2"></img>`
-        }
-        if(el.issued) {
-            htmlImg = `<img src="images/icons/waiter.png" class="chef-card icon ms-2"></img>`
-        }
-        return htmlImg
-    } 
+
 }
-
-
-
-// формирование страницы для кухни
 
 import { changeCurrentOrders } from './data.js';
 import { getListCurrentOrders } from './data.js';
 
 function kitchen() {
     
-    let currentOrders     // переменная в которой находиться весь массив текущих заказов
+    let currentOrders 
 
     function getCurrentOrders() {
         currentOrders = getListCurrentOrders()
     }
     getCurrentOrders()
-    // setInterval(()=>getCurrentOrders(), 2000)     // синхронизируем данные с удаленным хранилищем
 
     function kitchen() {
 
@@ -285,16 +263,16 @@ function kitchen() {
 
 
     const homePageBtn = document.querySelector('#homePageBtn')
-    homePageBtn.addEventListener('click', homePage)    //  вызов функции по отрисовке стартовой страницы
+    homePageBtn.addEventListener('click', homePage) 
 
     let stopListBtn = document.querySelector('#stopListBtn')
-    stopListBtn.addEventListener('click', stopList )     // вызов функции по отрисовке стоп-лист страницы
+    stopListBtn.addEventListener('click', stopList )
 
     let goListListBtn = document.querySelector('#goListListBtn')
-    goListListBtn.addEventListener('click', goList )     // вызов функции по отрисовке стоп-лист страницы
+    goListListBtn.addEventListener('click', goList )
 
 
-    function duplicate(dataArr, dataEl) {    // поиск дубликата блюд
+    function duplicate(dataArr, dataEl) { 
         let duplicate = false
         let count = -1
         for (let i = 0; i < dataArr.length; i++ ) {
@@ -310,14 +288,14 @@ function kitchen() {
 
     const listCards = document.querySelector('#listCards')
 
-    function showListOrders(dataArr) {      //  показываем карточки с заказами
+    function showListOrders(dataArr) {
         for (let i = 0; i < dataArr.length; i++ ) {
             let duplicateIcon = `<img src="images/icons/copy.svg" class="chef-card icon"></img>`
             if(!duplicate(dataArr, dataArr[i])) {
                 duplicateIcon = ''
             }
-            // console.log(dataArr[i].ready)
-            if(!dataArr[i].ready && !dataArr[i].cancel) {                   // в условии если готово или отмена тогда карточки не показываем
+
+            if(!dataArr[i].ready && !dataArr[i].cancel) {   
                 listCards.insertAdjacentHTML( 'afterBegin' , 
                     `<div class="order-card d-flex card-design my-1 p-1 rounded">
                         <div class="name-container w-100">
@@ -339,9 +317,7 @@ function kitchen() {
                     </div>`
                 )
             }
-            // console.log(duplicate(dataArr, dataArr[i]))    // Проверка дубликата.
         }
-        // console.log(currentOrders)
     }
 
 
@@ -350,15 +326,11 @@ function kitchen() {
     let update = document.querySelector('#update')
     update.addEventListener('click', updatingOrderList)
 
-    // setInterval(()=>updatingOrderList(), 2000)    // автообновление листа с заказами
-    function updatingOrderList() {                // функция обновления листа с заказами
+    function updatingOrderList() {       
         listCards.innerHTML = ''
         showListOrders(currentOrders)
     }
 
-
-
-    // Кнопка модального окна
     listCards.addEventListener('click', infoBtnGo)
     function infoBtnGo(event) {
         if(!event.target.closest('.chef-card-btn')) {
@@ -377,66 +349,46 @@ function kitchen() {
     }
 
 
-    listCards.addEventListener('click', sendingCookReady)   // прослушивание клика кнопки заказ приготовлен
+    listCards.addEventListener('click', sendingCookReady)
 
     function sendingCookReady(event) {
         if(!event.target.closest('.cookReadyBtn')) {
         return
         }
-        console.log('готово')
-        // тут при клиике готово меняем статус в массиве на готово
-        console.log(getCurrentOrders())
+
         for(let i = 0; i < currentOrders.length; i++ ) { 
             if(+currentOrders[i].idDish == +event.target.dataset.iddish) {
                 currentOrders[i].ready = true
                 changeCurrentOrders(currentOrders)
             }
         }
-        console.log(getCurrentOrders())
-        event.target.closest('.order-card').classList.add('background-color-ready') // добавление цветовой маркировки при клике готово
+        event.target.closest('.order-card').classList.add('background-color-ready')
     }
 
-    listCards.addEventListener('click', sendingСookCancel)   // прослушивание клика кнопки заказ отменен
+    listCards.addEventListener('click', sendingСookCancel)
     function sendingСookCancel(event) {
         if(!event.target.closest('.cookCancelBtn')) {
             return
             }
-        console.log('Отмена')
-            // тут при клиике готово меняем статус в массиве на отмена
+
         for(let i = 0; i < currentOrders.length; i++ ) {    
-            // if(currentOrders[i].uniqueOrderDishNumber == (+event.target.dataset.uniqueorderdishnumber)) {
                 if(+currentOrders[i].idDish == +event.target.dataset.iddish) {
                 currentOrders[i].cancel = true
             }
         }
         getCurrentOrders()
-        console.log(currentOrders)
         event.target.closest('.order-card').classList.add('cancel-background-color')
-        // console.log(event.target.closest('.order-card'))
         setTimeout(()=>event.target.closest('.order-card').remove(), 2000)
         
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Страница официанта
 
-let intermediateOrder = []    // массив промежуточного заказа
-function kitchenМenu() {                // страница оицианта
-    function listTables() {             // получаем html код  для построения блока со списком столиков
+let intermediateOrder = [] 
+function kitchenМenu() {        
+    function listTables() { 
         let listTables = ''
         getListTables().forEach((el, index) => {
             listTables += ` <option value="${el.number}">${el.number} ${el.description}</option>`
@@ -444,8 +396,8 @@ function kitchenМenu() {                // страница оицианта
         return listTables
     }
     
-    let listDishesMenu = getListDishesMenu()   // не забыть обновлять при клике на кнопку обновить и по таймеру
-    let restaurantMenuCategories = getRestaurantMenuCategories()      //  получим категории меню в переменную
+    let listDishesMenu = getListDishesMenu()  
+    let restaurantMenuCategories = getRestaurantMenuCategories()  
     let headerKitchenМenu = `
     <div class="kitchen-menu general-style pb-1">
         <div class="top-menu-buttons header p-1 mb-1 d-flex">
@@ -466,9 +418,9 @@ function kitchenМenu() {                // страница оицианта
     const kitchenMenuBlock = document.querySelector('#kitchenMenuBlock')
     const homePageBtn = document.querySelector('#homePageBtn')
     homePageBtn.addEventListener('click', homePage)
-    issuanceBtn.addEventListener('click', issuance)       //  раскоментировать
+    issuanceBtn.addEventListener('click', issuance) 
 
-    function showMenuCategories(categories) {     // категории заполняются автоматически из массива
+    function showMenuCategories(categories) {
         categories.forEach((el, index) => {
             kitchenMenuBlock.insertAdjacentHTML('afterBegin', `
                     <div class="menu-category">
@@ -478,16 +430,15 @@ function kitchenМenu() {                // страница оицианта
         });
     
         for(let i = 0; i < listDishesMenu.length; i++ )  { 
-            showMenuCards(listDishesMenu[i])                           //как только категории основного экрана заполнены ,  вызываем функцию показа карточек которые есть в массиве
+            showMenuCards(listDishesMenu[i])                           
         }
     }
     
     showMenuCategories(restaurantMenuCategories)
     
-    function showMenuCards(data) {     //   отображение каждой карточки 
+    function showMenuCards(data) { 
         const menuCategory = document.getElementsByClassName('menu-category')
         for(let i = 0; i < menuCategory.length; i++) {
-            // console.log(menuCategory[i].firstElementChild.textContent)
             let statusList = ''
             if(menuCategory[i].firstElementChild.textContent == data.category) {
                 if(data.stop) {
@@ -524,23 +475,18 @@ function kitchenМenu() {                // страница оицианта
     
     kitchenMenuBlock.addEventListener('click', clickAddButton )
     
-    function clickAddButton(event) {     // клик и получение данных при клике на кнопку с ценой
+    function clickAddButton(event) {  
         if(!(event.target.closest('button'))) {
             return
         }
         writeDataIntermediateArray(event.target.closest('.order-card').dataset.id, event.target.closest('.order-card').lastElementChild.lastElementChild.value )
-        //console.log(event.target.closest('.order-card').dataset.id)   // получили ID блюда меню
-        // console.log(event.target.closest('.order-card').lastElementChild.lastElementChild.value )   // получили колличество блюда меню
-        console.log()
     }
     
     function writeDataIntermediateArray(sId, quantity) {
-        let obj = listDishesMenu.find(el => el.id == sId)      // находим объект в массиве по id
+        let obj = listDishesMenu.find(el => el.id == sId)
         obj = {...obj}
         obj.quantity = +quantity
-        // console.log(obj)
         intermediateOrder.push(obj)
-        // console.log(intermediateOrder)   //  получили обект промежуточного заказа
     }
 
     const orderReceiptButton = document.querySelector("#orderReceiptButton")
@@ -554,62 +500,13 @@ function kitchenМenu() {                // страница оицианта
         
         addingOrder1()
         }
-          // как только получили данные по столику. вызываеим функцию построенмя чека
     }
     orderReceiptButton.addEventListener('click', selectedTable)
     
 }
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function editingMenu() {      // страница редактирования меню
-    // отрисовка стартовой страницы
     let sditingMenu = `                      
 <!-- Модальное окно -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -665,36 +562,33 @@ function editingMenu() {      // страница редактирования �
 
     const elementRestaurantMenuCategoriesModal = document.querySelector('#elementRestaurantMenuCategories')
     const restaurantCategoriesTopMenu = document.querySelector('#restaurantCategoriesTopMenu')
-    const modalButtons = document.querySelector('#modalButtons')       // блок кнопок в модальном окне
-    const menuCategories = document.querySelector('#menuCategories')   // блок основного меню с картачками блюд
+    const modalButtons = document.querySelector('#modalButtons')
+    const menuCategories = document.querySelector('#menuCategories') 
     const homePageBtn = document.querySelector('#homePageBtn')
 
-    homePageBtn.addEventListener('click', homePage)    //  вызов функции по отрисовке стартовой страницы
+    homePageBtn.addEventListener('click', homePage)  
 
-    modalButtons.addEventListener('click', modalButtonsClickSelect)    // отслеживание кликов в на кнопки в модальном окне
+    modalButtons.addEventListener('click', modalButtonsClickSelect)   
     
-    function modalButtonsClickSelect(event) {                          // определяем по какой кнопке произошло нажатие
+    function modalButtonsClickSelect(event) { 
         if(event.target.hasAttribute('data-delete')) {
-            // console.log('удалить')
         }
         if(event.target.hasAttribute('data-close')) {
-            // console.log('закр')
         }
         if(event.target.hasAttribute('data-save')) {
-            // console.log('сохр')
-            getDataFormChangeDish ()    //  получим данные из формы модального окна при клике сохранить
+            getDataFormChangeDish ()  
         }
     }
     
-    // имитация запроса на сервер.  категории блюд
-    async function requestListCtegories() {       /// как имитировать запрос на сервер????????????????????????????????????????????????
-        restaurantMenuCategoriesUpdateModal(getRestaurantMenuCategories())        // запуск функции с передачей списка категорий блюд в модальное окно
-        restaurantMenuCategoriesUpdateTopMenu(getRestaurantMenuCategories())      // запуск функции с передачей списка категорий блюд в верхнее выпадающее меню
-        showMenuCategories(getRestaurantMenuCategories())                         // вывод категорий блюд на основной экран 
+
+    async function requestListCtegories() {       
+        restaurantMenuCategoriesUpdateModal(getRestaurantMenuCategories())       
+        restaurantMenuCategoriesUpdateTopMenu(getRestaurantMenuCategories())      
+        showMenuCategories(getRestaurantMenuCategories())   
     }
-    requestListCtegories()      // запрос на сервер  категории блюд
+    requestListCtegories()   
     
-    function restaurantMenuCategoriesUpdateModal(data) {    // функция обновления выпадающего списка в модальном окне с категориями меню 
+    function restaurantMenuCategoriesUpdateModal(data) {  
         data.forEach((el, index) => {
             elementRestaurantMenuCategoriesModal.insertAdjacentHTML('beforeEnd',`<option value="${el}">${el}</option>`)
         });
@@ -706,8 +600,7 @@ function editingMenu() {      // страница редактирования �
         });
     }
     
-    // Сбор и запись данных 
-    class dishСard {       // класс для создания карточки блюда. 
+    class dishСard {  
         id = getListDishesMenu().length + 1
         stop = false
         go = false
@@ -723,36 +616,30 @@ function editingMenu() {      // страница редактирования �
     const nameDish = document.querySelector('#nameDish')
     const description = document.querySelector('#description')
     const recipe = document.querySelector('#recipe')
-    function getDataFormChangeDish () {     // функция сбора данных из формы
+    function getDataFormChangeDish () { 
         let data = new dishСard(elementRestaurantMenuCategoriesModal.value, price.value, nameDish.value, description.value, recipe.value,)
         sendDataServer(data)
     }
     
-    // как имитировать отправку данных на сервер ???????????????????????????????
-    async function sendDataServer(data) {   // отправка данных отдельного блюда на сервер . сейчас добавляется в массив listDishesMenu
+    async function sendDataServer(data) { 
         let listDishesMenu = getListDishesMenu()
         listDishesMenu.push(data)
         changeListDishesMenu(listDishesMenu)
         showMenuCards(data)
-        console.log(23456337488)
         clearModal()
-
     }
+
     
-    // вывод катрочек блюд на экран
-    
-    function showMenuCategories(categories) {     // категории заполняются автоматически из массива
+    function showMenuCategories(categories) {  
         categories.forEach((el, index) => {
             menuCategories.insertAdjacentHTML('afterBegin', `<div class="menu-category"><h4 class="menuCategory d-inline-block">${el}</h4></div>`)
         });
     
         for(let i = 0; i < getListDishesMenu().length; i++ )  { 
-            showMenuCards(getListDishesMenu()[i])                           //как только категории основного экрана заполнены ,  вызываем функцию показа карточек которые есть в массиве
+            showMenuCards(getListDishesMenu()[i])  
         }
     }
     
-    // не могу сообразить как сделать. в моем представлении хочу пройти по html коду. получая категории блюд из текстого поля . поля к этому моменту уже заполнены . 
-    // сравнивать значения из html и категорию из  обекта который в котором есть значение категории и сразу добавлять в html.   если есть способ проще, скажите.
     function showMenuCards(data) {
         const menuCategory = document.getElementsByClassName('menuCategory')
         for(let i = 0; i < menuCategory.length; i++) {
@@ -773,16 +660,10 @@ function editingMenu() {      // страница редактирования �
         }
     }
     
-    // реализация кнопки редактировать для конткретного элемента
-    
     menuCategories.addEventListener('click', editSingleElement)
     function editSingleElement(event) {
-        
-        console.log(+event.target.dataset.id)
         let ListDishesMenu = getListDishesMenu()
-        // console.log(ListDishesMenu)
         for(let i = 0; i < ListDishesMenu.length; i++) {
-            // console.log(ListDishesMenu[i])
             if(+event.target.dataset.id == ListDishesMenu[i].id) {
             price.value = +ListDishesMenu[i].price
             nameDish.innerText = ListDishesMenu[i].nameDish
@@ -792,27 +673,13 @@ function editingMenu() {      // страница редактирования �
         }
     }
     
-    function clearModal() {       //   очистка данных модального окна
+    function clearModal() { 
         // тут вписать код очистки модального окна
     }
-
-
-    // самое сложное реализовать редактирование и удаление каждого блюда через модальное окно бутстрап, ID блюд уже проставлены.  
 }
 
-
-
-
-
-
-
-
-
-
 ///  меню стоп-лист
-
 function stopList() {
-
     let stopListHeader = `    
     <div class="window-kitchen general-style pb-1">
         <div class="top-menu-buttons header p-1 mb-1 d-flex">
@@ -837,26 +704,24 @@ function stopList() {
     const backBtnStopList1 = document.querySelector('#backBtnStopList1');
     backBtnStopList1.addEventListener('click', kitchen)
 
-    async function requestListStopCategories() {                  // имитируем запрос на сервер
-        // insertStopCategoryList(restaurantMenuCategories)
+    async function requestListStopCategories() {                 
         insertStopCategoryList (getRestaurantMenuCategories())
     }
     requestListStopCategories()
 
 
-    function insertStopCategoryList(categories) {                    // Формируем наа странице список категорий блюд
+    function insertStopCategoryList(categories) {                  
         categories.forEach((el) => {
             stopList.insertAdjacentHTML('beforeEnd', `<h5 class="menuCategoryCheckbox ms-2" value="${el}">${el}</h5>`)
         })
 
         for(let i = 0; i < getListDishesMenu().length; i++ )  { 
-            showCheckboxList(getListDishesMenu()[i])                           //как только категории основного экрана заполнены ,  вызываем функцию показа карточек которые есть в массиве
+            showCheckboxList(getListDishesMenu()[i])                         
         }
     }
 
 
-    function showCheckboxList(data) {                  // вывод на экран чекбоксов по категориям 
-        console.log(data)                              // видим что каждый элемент приходит в функцию
+    function showCheckboxList(data) {
         let menuCategoryCheckbox = document.getElementsByClassName('menuCategoryCheckbox')
         for(let i = 0; i < menuCategoryCheckbox.length; i++) {
             if(menuCategoryCheckbox[i].textContent == data.category) {
@@ -887,20 +752,15 @@ function stopList() {
         const inputChek = document.getElementsByClassName('inputChek')
         for(let i = 0; i < inputChek.length; i++) {         // в данном цикле идем без привязки к ID поэтому beforeBegin важен порядок . не меняем  menuCategoryCheckbox[i].insertAdjacentHTML('beforeBegin',
             if(inputChek[i].checked) {
-                // console.log(listDishesMenu[i].stop)
                 let listDishesMenu = getListDishesMenu()
                 listDishesMenu[i].stop = true
                 changeListDishesMenu(listDishesMenu)
-                // listDishesMenu[i].stop = true
             }
             if(!inputChek[i].checked) {
                 let listDishesMenu = getListDishesMenu()
                 listDishesMenu[i].stop = false
                 changeListDishesMenu(listDishesMenu)
-                // listDishesMenu[i].stop = false
             }
-            
-                console.log(inputChek[i].checked)    // проверка  состояния чекбокса
         }
         
         console.log(getListDishesMenu(), 'проверяем внесенные изменения')
@@ -934,24 +794,23 @@ function goList() {
     const backBtnGoList1 = document.querySelector('#backBtnGoList1');
     backBtnGoList1.addEventListener('click', kitchen)
 
-    async function requestListGoCategories() {                  // имитируем запрос на сервер
+    async function requestListGoCategories() {
         insertGoCategoryList(getRestaurantMenuCategories())
     }
     requestListGoCategories()
 
 
-    function insertGoCategoryList(categories) {                    // Формируем наа странице список категорий блюд
+    function insertGoCategoryList(categories) {
         categories.forEach((el) => {
             goList.insertAdjacentHTML('beforeEnd', `<h5 class="menuCategoryCheckbox ms-2" value="${el}">${el}</h5>`)
         })
 
         for(let i = 0; i < getListDishesMenu().length; i++ )  { 
-            showCheckboxList(getListDishesMenu()[i])                           //как только категории основного экрана заполнены ,  вызываем функцию показа карточек которые есть в массиве
+            showCheckboxList(getListDishesMenu()[i])                           
         }
     }
 
-    function showCheckboxList(data) {                  // вывод на экран чекбоксов по категориям 
-        console.log(data)                              // видим что каждый элемент приходит в функцию
+    function showCheckboxList(data) {
         let menuCategoryCheckbox = document.getElementsByClassName('menuCategoryCheckbox')
         for(let i = 0; i < menuCategoryCheckbox.length; i++) {
             if(menuCategoryCheckbox[i].textContent == data.category) {
@@ -974,9 +833,7 @@ function goList() {
     }
 
     const saveBtn = document.querySelector("#saveBtn")
-
     saveBtn.addEventListener('click', overwriteData)
-
     async function overwriteData() {
         const inputChek = document.getElementsByClassName('inputChek')
         for(let i = 0; i < inputChek.length; i++) {         // в данном цикле идем без привязки к ID поэтому beforeBegin важен порядок . не меняем  menuCategoryCheckbox[i].insertAdjacentHTML('beforeBegin',
@@ -990,37 +847,9 @@ function goList() {
                 listDishesMenu[i].go = false
                 changeListDishesMenu(listDishesMenu)
             }
-            
-                // console.log(inputChek[i].checked)    // проверка  состояния чекбокса
         }
-        
-        console.log(getListDishesMenu(), 'проверяем внесенные изменения')
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 function addingOrder1() {
@@ -1046,10 +875,8 @@ function addingOrder1() {
     </div>
     `
     app.innerHTML = addingOrderHtmlCode
-    // console.log(intermediateOrder)
     let addingOrder = document.querySelector('#addingOrder')
     for(let i = 1; i < intermediateOrder.length; i++ ) {
-        // console.log(intermediateOrder[i])
         addingOrder.insertAdjacentHTML('beforeEnd', `
             <div class="product-line border-bottom my-2 border-2 border-black border-opacity-50" data-intermediateOrderId = ${i}>
                 <div class="d-flex">
@@ -1068,14 +895,14 @@ function addingOrder1() {
 
     const confirmBtn = document.querySelector('#confirmBtn')
     confirmBtn.addEventListener('click', lickConfirmButton)
-    function lickConfirmButton() {    // выполняется при клике на кнопку верно
+    function lickConfirmButton() {
         writeOrdersArray(intermediateOrder)
         intermediateOrder = []
         kitchenМenu()                       
     }
 }
 
-function sum (arrOrder) {    // считаем смумму заказа
+function sum (arrOrder) {  
     let sum = 0
     for(let i = 1; i < arrOrder.length; i++) {
         sum += +arrOrder[i].price * +arrOrder[i].quantity
@@ -1083,9 +910,7 @@ function sum (arrOrder) {    // считаем смумму заказа
     return sum
 }
 
-function writeOrdersArray(arrOrder) {    // запись заказа в массив для официантов
-    // arrOrder  все верно работает и обнуляется
-    // debugger
+function writeOrdersArray(arrOrder) {  
     let time = timeOrger()
     let orderNumber = generationOrderNumber()
     for (let i = 1; i < arrOrder.length; i++) {
@@ -1100,67 +925,29 @@ function writeOrdersArray(arrOrder) {    // запись заказа в мас�
     }
     let currentOrders1 = getListCurrentOrders()
 
-    arrOrder.shift()   // уберем 0 элемент массива . т.к. он указывал на выбранный номер столика
+    arrOrder.shift() 
     let rezArr = currentOrders1.concat(arrOrder)
     changeCurrentOrders(rezArr)
     console.log(getListCurrentOrders())
-
-
     currentOrders1 = []
     intermediateOrder = []
     rezArr = []
 }
 
-
-
-
-
-
-// Генерация номера заказа
 function generationOrderNumber() {
     let time = new Date 
-    /////// не могу написать регулярку одним заходом
     let regexp1 = /\D/gi;
     let rez = time.toTimeString().replace(regexp1, '');
     let regexp2 = /^.{6}/gi;
     return rez.match(regexp2)[0]
 }
 
-// Генерация времени заказа
 function timeOrger() {
     var currentdate = new Date(); 
     return ((currentdate.getHours() < 10)?"0":"") + currentdate.getHours() +":"+ ((currentdate.getMinutes() < 10)?"0":"") + currentdate.getMinutes() +":"+ ((currentdate.getSeconds() < 10)?"0":"") + currentdate.getSeconds();
 }    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-function issuance() {      // окно выдачи заказа
-    
-
-    let tableNam = 0      // выбранный столик по умолчанию. в нем меняем значение переменной исходя из клика пользователя
-    
+function issuance() { 
     const issuanceStartHtml = `
         <div class="window-issuance general-style  pb-1">
     
@@ -1178,18 +965,15 @@ function issuance() {      // окно выдачи заказа
         </div>
     `
     
-    app.innerHTML = issuanceStartHtml               //   отрисовываем страницу администатора
-    
+    app.innerHTML = issuanceStartHtml
     let update = document.querySelector('#update')
-    update.addEventListener('click', issuance)      //  вызов функции по отрисовке текущей страницы (обновление)
-    // setInterval(issuance, 10000)                      //  автоматическое обновление текущей страницы через временной интервал 10 сек
+    update.addEventListener('click', issuance)  
 
     const homePageBtn = document.querySelector('#homePageBtn')
-    homePageBtn.addEventListener('click', homePage)       //  вызов функции по отрисовке стартовой страницы
+    homePageBtn.addEventListener('click', homePage) 
 
     const backBtn = document.querySelector('#backBtn')
-    backBtn.addEventListener('click', kitchenМenu)       //  вызов функции по отрисовке страницы официанта
-
+    backBtn.addEventListener('click', kitchenМenu) 
 
     const listTablesIssuance = document.querySelector('#listTablesIssuance')
     function htmlBlockTablesFormation(dataArr) {
@@ -1207,25 +991,24 @@ function issuance() {      // окно выдачи заказа
     }
     htmlBlockTablesFormation(getListTables())
 
-    function sumorderAmountTable(tableNumber) {      // принимает номер столика и возвращает сумму всех чеков по этому столику 
+    function sumorderAmountTable(tableNumber) {     
         return getListCurrentOrders()
             .filter(x => x.table === tableNumber)
             .reduce((a, x) => a + x.price * x.quantity, 0);
     }
 
-    // console.log(getListCurrentOrders())
 
-    function colorCodingTablesCurrentWaiter(arrOrder)  {                 //  цветовая маркировка столов текущего официанта при загрузке страницы
-        let arrayActiveTables = []                    // соберем в массив номера открытых столиков перебирая массив заказов и не дублируя данные
+    function colorCodingTablesCurrentWaiter(arrOrder)  { 
+        let arrayActiveTables = []  
         arrOrder.forEach( (el) => {
             if (!arrayActiveTables.includes(el.table)) {
                 arrayActiveTables.push(el.table);
             }
         })
 
-        let table = document.getElementsByClassName('table')     // получаем коллекцию html элементов столиков
+        let table = document.getElementsByClassName('table') 
         
-        for(let el of table) {                             // перебираем , сравниваем с массивом активных столиков текущего официанта и устанавливаем цветовую метку
+        for(let el of table) {  
             let active = arrayActiveTables.some((num) => {
                 return num == +el.dataset.table
             })
@@ -1237,7 +1020,7 @@ function issuance() {      // окно выдачи заказа
     
     colorCodingTablesCurrentWaiter(getListCurrentOrders())
 
-    function colorCodingSelectedTable(event) {             // добавляем цветовую маркировку блокам с выбранным столиком 
+    function colorCodingSelectedTable(event) {           
         let arr = event.currentTarget.children
         for(let el of arr) {
             el.classList.remove('active-waiter-selection')
@@ -1245,16 +1028,15 @@ function issuance() {      // окно выдачи заказа
         event.target.closest('.table').classList.add('active-waiter-selection')
     }
 
-
     const openChecksContainerIssuance = document.querySelector('#openChecksContainerIssuance')
-    function showCurrentOrders(currentOrdersArr, numTable) {       //  отображение на странице информации о текущих заказах по каждому столику
+    function showCurrentOrders(currentOrdersArr, numTable) {     
         openChecksContainerIssuance.innerHTML = ''
         let elText =''
         currentOrdersArr.forEach((el) => {
             if(el.table == numTable) {
                 let btnGiveOut = !el.issued && el.ready  ? `<button type="button" class="btn btn-success btn-sm">Выдать</button>` : ''    // это кнопка выдать
                 let cancel = el.cancel ? 'cancel' : ''
-                elText += `<p class="mb-0 ${cancel}" data-idDish = ${el.idDish}><span>${showLogoStatusDish(el)}</span> ${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span> ${el.quantity} шт.</span>&emsp;<span>${el.teme}</span>&emsp;<span>${el.price * el.quantity} р.</span></span> ${btnGiveOut}</p>`
+                elText += `<p class="mb-0 ${cancel}" data-idDish = ${el.idDish}><span>${showLogoStatusDish(el)}</span> ${el.nameDish}<span class="d-inline-block ms-4 fw-bold"><span> ${el.quantity} шт.</span>&emsp;<span>${el.time}</span>&emsp;<span>${el.price * el.quantity} р.</span></span> ${btnGiveOut}</p>`
 
             }
         }
@@ -1268,10 +1050,8 @@ function issuance() {      // окно выдачи заказа
 
     }
 
-    // возможно нужно будет удалить
-    function showLogoStatusDish(el) { // вывод логотипа статуса блюда
+    function showLogoStatusDish(el) { 
         let htmlImg = `<img src="images/icons/cook.png" class="chef-card icon ms-2"></img>`
-        console.log(el)
         if(el.ready) {
             htmlImg = `<img src="images/icons/ready-meal.png" class="chef-card icon ms-2"></img>`
         }
@@ -1284,25 +1064,21 @@ function issuance() {      // окно выдачи заказа
     
 
     listTablesIssuance.addEventListener('click', selectedTable)  
-    function selectedTable(event) {                  // действие при клике на выбранный столик
+    function selectedTable(event) {  
         if(!event.target.closest('.table')) {    
             return
         }
-
-        colorCodingSelectedTable(event)               // добавляем цветовую маркировку блокам с выбранным столиком 
-        showCurrentOrders(getListCurrentOrders(), +event.target.closest('.table').dataset.table)    // передадим массив текущие заказы и номер столика на который кликает официант
-        console.log(+event.target.closest('.table').dataset.table)
-
+        colorCodingSelectedTable(event)
+        showCurrentOrders(getListCurrentOrders(), +event.target.closest('.table').dataset.table)    
     }
 
-    openChecksContainerIssuance.addEventListener('click', issuedBtn)                   // прослушивание кнопок выдано
+    openChecksContainerIssuance.addEventListener('click', issuedBtn)
     function issuedBtn(event) {
         if(!event.target.closest('button')) {    
             return
         }
 
         let arr = getListCurrentOrders()
-
 
         for(let i = 0; i < arr.length; i++ ) {
             if(+event.target.closest('p').dataset.iddish == arr[i].idDish) {
@@ -1314,7 +1090,7 @@ function issuance() {      // окно выдачи заказа
 }
 
 
-function showLogoStatusDish(el) { // вывод логотипа статуса блюда
+function showLogoStatusDish(el) {
     let htmlImg = `<img src="images/icons/cook.png" class="chef-card icon ms-2"></img>`
     console.log(el)
     if(el.ready) {
